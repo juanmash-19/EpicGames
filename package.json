@@ -1,15 +1,16 @@
 {
-  "name": "epic_games",
+  "name": "pets-questions-movil",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "expo": "~52.0.28",
+    "expo": "~52.0.27",
     "expo-constants": "^17.0.5",
     "expo-linking": "^7.0.5",
     "expo-router": "^4.0.17",
@@ -26,6 +27,9 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~18.3.12",
+    "babel-preset-expo": "^12.0.6",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "~8.0.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.4.2",
