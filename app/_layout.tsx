@@ -1,14 +1,33 @@
-import { Stack } from "expo-router";
+import { View, Text, FlatList } from 'react-native'
+import { Link } from 'expo-router'
 
-import "../global.css";
+const data = [
+  { id: '1', name: 'Elemento 1' },
+  { id: '2', name: 'Elemento 2' },
+  { id: '3', name: 'Elemento 3' },
+  { id: '4', name: 'Elemento 4' },
+]
 
-const HomeLayout = () => {
+const Index = () => {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }}/>
-      <Stack.Screen name="profile" options={{ headerShown: false }}/>
-    </Stack>
+    <View>
+      <Text className='text-4xl text-red-600'>Inicio</Text>
+      <Link href='/account/878'>
+        <Text className='rounded p-4 bg-slate-200 text-5xl'>
+          Perfil
+        </Text>
+      </Link>
+      <FlatList
+        data={data}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <Text className='p-2 text-xl border-b border-gray-300'>
+            {item.name}
+          </Text>
+        )}
+      />
+    </View>
   )
 }
 
-export default HomeLayout
+export default Index
