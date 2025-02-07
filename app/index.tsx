@@ -29,6 +29,11 @@ const Index = () => {
           Noticias
         </Text>
       </Link>
+      <Link href='/GameLibrary'>
+        <Text className='rounded p-4 bg-slate-200 text-3xl'>
+          Biblioteca de Juegos
+        </Text>
+      </Link>
     </View>
   )
 }
