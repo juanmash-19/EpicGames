@@ -6,7 +6,7 @@ const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(""); 
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [subscribe, setSubscribe] = useState(false);

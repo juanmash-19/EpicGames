@@ -1,41 +1,53 @@
-import { View, Text, Pressable } from 'react-native'
-import { Link } from 'expo-router'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Drawer } from 'expo-router/drawer';
 
-const Index = () => {
+export default function AppLayout() {
   return (
-    <View className='h-full flex flex-col items-center justify-center gap-10'>
-      <Link href='/login'>
-        <Text className='bg-slate-200 text-3xl p-5 rounded-lg'>
-          Autentication
-        </Text>
-      </Link>
-      <Link href='/register'>
-        <Text className='rounded p-4 bg-slate-200 text-3xl'>
-          Registrarse
-        </Text>
-      </Link>
-      <Link href='/GameStore'>
-        <Text className='rounded p-4 bg-slate-200 text-3xl'>
-          Games Store
-        </Text>
-      </Link>
-      <Link href='/WishList'>
-        <Text className='rounded p-4 bg-slate-200 text-3xl'>
-          Lista de Deseos
-        </Text>
-      </Link>
-      <Link href='/Notices'>
-        <Text className='rounded p-4 bg-slate-200 text-3xl'>
-          Noticias
-        </Text>
-      </Link>
-      <Link href='/GameLibrary'>
-        <Text className='rounded p-4 bg-slate-200 text-3xl'>
-          Biblioteca de Juegos
-        </Text>
-      </Link>
-    </View>
-  )
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer>
+        <Drawer.Screen
+          name="login"
+          options={{
+            drawerLabel: 'Autenticación',
+            title: 'Autenticación',
+          }}
+        />
+        <Drawer.Screen
+          name="register"
+          options={{
+            drawerLabel: 'Registrarse',
+            title: 'Registrarse',
+          }}
+        />
+        <Drawer.Screen
+          name="GameStore"
+          options={{
+            drawerLabel: 'Games Store',
+            title: 'Games Store',
+          }}
+        />
+        <Drawer.Screen
+          name="WishList"
+          options={{
+            drawerLabel: 'Lista de Deseos',
+            title: 'Lista de Deseos',
+          }}
+        />
+        <Drawer.Screen
+          name="Notices"
+          options={{
+            drawerLabel: 'Noticias',
+            title: 'Noticias',
+          }}
+        />
+        <Drawer.Screen
+          name="GameLibrary"
+          options={{
+            drawerLabel: 'Biblioteca de Juegos',
+            title: 'Biblioteca de Juegos',
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
+  );
 }
-
-export default Index;
