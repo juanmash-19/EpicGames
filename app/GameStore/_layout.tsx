@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ImageBackground, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const games = [
@@ -19,57 +19,51 @@ const games = [
 
 const EpicGamesStore = () => {
   return (
-    <ImageBackground source={require("../(auth)/fondo.jpg")} style={styles.background}>
-      <View style={styles.container}>
-        {/* Encabezado */}
-        <View style={styles.header}>
-          <Icon name="bars" size={25} color="#fff" />
-          <Text style={styles.logo}>EPIC GAMES</Text>
-          <View style={styles.userIcons}>
-            <Icon name="user-circle" size={25} color="#fff" style={styles.icon} /> 
-            <Icon name="bell" size={25} color="#fff" style={styles.icon} />
-          </View>
-        </View>
-
-        <FlatList
-          data={games}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.gameCard}>
-              <View style={styles.imagePlaceholder} />
-              <Text style={styles.gameTitle}>{item.title}</Text>
-              <Text style={styles.gameDescription}>{item.description}</Text>
-              <Text style={styles.gamePrice}>{item.price}</Text>
-            </View>
-          )}
-        />
-
-        <View style={styles.bottomNav}>
-          <Icon name="home" size={25} color="#fff" />
-          <Icon name="shopping-cart" size={25} color="#fff" /> 
-          <Icon name="heart" size={25} color="#fff" /> 
-          <Icon name="gift" size={25} color="#fff" />
+    <View style={styles.container}>
+      {/* Encabezado */}
+      <View style={styles.header}>
+        <Icon name="bars" size={25} color="#fff" />
+        <Text style={styles.logo}>EPIC GAMES</Text>
+        <View style={styles.userIcons}>
+          <Icon name="user-circle" size={25} color="#fff" style={styles.icon} /> 
+          <Icon name="bell" size={25} color="#fff" style={styles.icon} />
         </View>
       </View>
-    </ImageBackground>
+
+      <FlatList
+        data={games}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.gameCard}>
+            <View style={styles.imagePlaceholder} />
+            <Text style={styles.gameTitle}>{item.title}</Text>
+            <Text style={styles.gameDescription}>{item.description}</Text>
+            <Text style={styles.gamePrice}>{item.price}</Text>
+          </View>
+        )}
+      />
+
+      <View style={styles.bottomNav}>
+        <Icon name="home" size={25} color="#fff" />
+        <Icon name="shopping-cart" size={25} color="#fff" /> 
+        <Icon name="heart" size={25} color="#fff" /> 
+        <Icon name="gift" size={25} color="#fff" />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
   container: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.7)",
+    backgroundColor: "#000", // Fondo negro
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     padding: 15,
-    backgroundColor: "rgba(0,0,0,0.8)",
+    backgroundColor: "#111",
   },
   logo: {
     color: "#fff",
@@ -113,7 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 15,
-    backgroundColor: "rgba(0,0,0,0.8)",
+    backgroundColor: "#111",
   },
 });
 
