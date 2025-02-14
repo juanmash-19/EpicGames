@@ -20,12 +20,6 @@ const games = [
 const GameLibrary = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.sidebar}>
-        <Icon name="bars" size={25} color="#fff" style={styles.icon} />
-        <Text style={styles.logo}>EPIC GAMES</Text>
-        <Icon name="user-circle" size={25} color="#fff" style={styles.icon} />
-      </View>
-      
       <View style={styles.container}>
         <Text style={styles.header}>Biblioteca</Text>
         <FlatList
@@ -53,20 +47,7 @@ const GameLibrary = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#000", // Fondo negro
-  },
-  sidebar: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
-    backgroundColor: "#000",
-  },
-  logo: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-    flex: 1,
-    textAlign: "center",
+    backgroundColor: "#000", 
   },
   container: {
     flex: 1,
@@ -102,9 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 15,
     backgroundColor: "#000",
-  },
-  icon: {
-    marginHorizontal: 10,
   },
 });
 

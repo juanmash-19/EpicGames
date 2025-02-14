@@ -20,16 +20,6 @@ const games = [
 const EpicGamesStore = () => {
   return (
     <View style={styles.container}>
-      {/* Encabezado */}
-      <View style={styles.header}>
-        <Icon name="bars" size={25} color="#fff" />
-        <Text style={styles.logo}>EPIC GAMES</Text>
-        <View style={styles.userIcons}>
-          <Icon name="user-circle" size={25} color="#fff" style={styles.icon} /> 
-          <Icon name="bell" size={25} color="#fff" style={styles.icon} />
-        </View>
-      </View>
-
       <FlatList
         data={games}
         keyExtractor={(item) => item.id}
@@ -57,24 +47,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000", // Fondo negro
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 15,
-    backgroundColor: "#111",
-  },
-  logo: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  userIcons: {
-    flexDirection: "row",
-  },
-  icon: {
-    marginLeft: 15,
   },
   gameCard: {
     backgroundColor: "#222",
