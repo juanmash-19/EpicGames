@@ -2,6 +2,8 @@
   "expo": {
     "name": "epic_games",
     "slug": "epicgames",
+    "scheme": "epicgames",
+    "slug": "epicgames",
     "scheme": "epic_games",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fabian.hernandezc.epicgames"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,9 +36,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "68e0df13-c177-4512-85d7-51420563bc8a"
+        "projectId": "e5a33f13-430b-42c6-8f9d-cf4114d01d08"
       }
     },
-    "owner": "juanmash_19"
+    "owner": "fabian.hernandezc"
   }
 }

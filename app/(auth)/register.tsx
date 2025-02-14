@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Switch, Alert, ImageBackground } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Switch, Alert } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(""); 
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
@@ -28,92 +28,84 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <ImageBackground source={require("../(auth)/fondo.jpg")} style={styles.background}>
-      <View style={styles.container}>
-        <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.title}>Regístrate</Text>
+    <View style={styles.container}>
+      <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
+      <Text style={styles.title}>Regístrate</Text>
 
+      <TextInput
+        style={styles.input}
+        placeholder="Correo electrónico"
+        placeholderTextColor="#aaa"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+
+      <Dropdown
+        style={styles.dropdown}
+        data={countries}
+        labelField="label"
+        valueField="value"
+        placeholder="Selecciona tu país"
+        placeholderStyle={{ color: "#aaa" }}
+        selectedTextStyle={{ color: "#fff" }}
+        itemTextStyle={{ color: "#000" }}
+        value={country}
+        onChange={(item) => setCountry(item.value)}
+      />
+
+      <View style={styles.row}>
         <TextInput
-          style={styles.input}
-          placeholder="Correo electrónico"
+          style={[styles.input, styles.halfInput]}
+          placeholder="Nombre"
           placeholderTextColor="#aaa"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-
-        <Dropdown
-          style={styles.dropdown}
-          data={countries}
-          labelField="label"
-          valueField="value"
-          placeholder="Selecciona tu país"
-          placeholderStyle={{ color: "#aaa" }}
-          selectedTextStyle={{ color: "#fff" }}
-          itemTextStyle={{ color: "#000" }}
-          value={country}
-          onChange={(item) => setCountry(item.value)}
-        />
-
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Nombre"
-            placeholderTextColor="#aaa"
-            value={firstName}
-            onChangeText={setFirstName}
-          />
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Apellido"
-            placeholderTextColor="#aaa"
-            value={lastName}
-            onChangeText={setLastName}
-          />
-        </View>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Usuario"
-          placeholderTextColor="#aaa"
-          value={username}
-          onChangeText={setUsername}
+          value={firstName}
+          onChangeText={setFirstName}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
+          style={[styles.input, styles.halfInput]}
+          placeholder="Apellido"
           placeholderTextColor="#aaa"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
+          value={lastName}
+          onChangeText={setLastName}
         />
-
-        <View style={styles.switchContainer}>
-          <Switch value={subscribe} onValueChange={setSubscribe} />
-          <Text style={styles.switchText}>Recibir noticias y ofertas</Text>
-        </View>
-
-        <View style={styles.switchContainer}>
-          <Switch value={acceptTerms} onValueChange={setAcceptTerms} />
-          <Text style={styles.switchText}>Acepto los términos del servicio</Text>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Continuar</Text>
-        </TouchableOpacity>
       </View>
-    </ImageBackground>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Usuario"
+        placeholderTextColor="#aaa"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+
+      <View style={styles.switchContainer}>
+        <Switch value={subscribe} onValueChange={setSubscribe} />
+        <Text style={styles.switchText}>Recibir noticias y ofertas</Text>
+      </View>
+
+      <View style={styles.switchContainer}>
+        <Switch value={acceptTerms} onValueChange={setAcceptTerms} />
+        <Text style={styles.switchText}>Acepto los términos del servicio</Text>
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Continuar</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -121,8 +113,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     paddingVertical: 30,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 10,
+    backgroundColor: "#000",
   },
   logo: {
     width: 100,
@@ -143,12 +134,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 15,
     color: "#fff",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "#222",
   },
   dropdown: {
     width: 300,
     height: 50,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "#222",
     borderRadius: 8,
     paddingHorizontal: 12,
     borderWidth: 1,

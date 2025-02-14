@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, SafeAreaView, ImageBackground } from "react-native";
+import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const games = [
@@ -19,47 +19,41 @@ const games = [
 
 const GameLibrary = () => {
   return (
-    <ImageBackground source={require("../(auth)/fondo.jpg")} style={styles.background}>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.sidebar}>
-          <Icon name="bars" size={25} color="#fff" style={styles.icon} />
-          <Text style={styles.logo}>EPIC GAMES</Text>
-          <Icon name="user-circle" size={25} color="#fff" style={styles.icon} />
-        </View>
-        
-        <View style={styles.container}>
-          <Text style={styles.header}>Biblioteca</Text>
-          <FlatList
-            data={games}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.gameCard}>
-                <View style={styles.imagePlaceholder} />
-                <Text style={styles.gameTitle}>{item.title}</Text>
-              </View>
-            )}
-          />
-        </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.sidebar}>
+        <Icon name="bars" size={25} color="#fff" style={styles.icon} />
+        <Text style={styles.logo}>EPIC GAMES</Text>
+        <Icon name="user-circle" size={25} color="#fff" style={styles.icon} />
+      </View>
+      
+      <View style={styles.container}>
+        <Text style={styles.header}>Biblioteca</Text>
+        <FlatList
+          data={games}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.gameCard}>
+              <View style={styles.imagePlaceholder} />
+              <Text style={styles.gameTitle}>{item.title}</Text>
+            </View>
+          )}
+        />
+      </View>
 
-        <View style={styles.bottomNav}>
-          <Icon name="home" size={25} color="#fff" />
-          <Icon name="shopping-cart" size={25} color="#fff" />
-          <Icon name="heart" size={25} color="#fff" />
-          <Icon name="gift" size={25} color="#fff" />
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
+      <View style={styles.bottomNav}>
+        <Icon name="home" size={25} color="#fff" />
+        <Icon name="shopping-cart" size={25} color="#fff" />
+        <Icon name="heart" size={25} color="#fff" />
+        <Icon name="gift" size={25} color="#fff" />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
   safeArea: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "#000", // Fondo negro
   },
   sidebar: {
     flexDirection: "row",
