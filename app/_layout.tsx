@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Drawer } from "expo-router/drawer";
+import { View, TouchableOpacity } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import "../global.css";
 
@@ -21,7 +23,7 @@ const HomeLayout = () => {
     <Drawer
       screenOptions={{
         drawerStyle: {
-          backgroundColor: "#000", // Fondo negro del menú
+          backgroundColor: "#000",
         },
         drawerLabelStyle: {
           color: "#fff",
@@ -30,6 +32,13 @@ const HomeLayout = () => {
           backgroundColor: "#000",
         },
         headerTintColor: "#fff",
+        headerRight: () => (
+          <View style={{ marginRight: 15 }}>
+            <TouchableOpacity onPress={() => console.log("Perfil abierto")}>
+              <Icon name="user" size={28} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        ),
       }}
     >
       <Drawer.Screen name="(auth)" options={{ drawerLabel: "Autenticación", title: "Autenticación" }} />
