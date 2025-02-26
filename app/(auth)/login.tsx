@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from "react-native";
+import { useNavigation } from "@react-navigation/native"; 
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({ headerShown: false }); // Oculta la barra superior
+  }, []);
 
   const handleLogin = () => {
     console.log("Login con:", { email });
