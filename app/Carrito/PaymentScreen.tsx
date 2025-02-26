@@ -11,7 +11,7 @@ const PaymentScreen = () => {
 
   const onSubmit = (data: any) => {
     console.log("Datos de pago:", data);
-    router.push("/success"); // Ir a pantalla de éxito
+    router.push("/success"); 
   };
 
   return (

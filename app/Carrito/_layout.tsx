@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import Icon from "react-native-vector-icons/FontAwesome";  // Importación de Icon
+import Icon from "react-native-vector-icons/FontAwesome";  
 
 const CartScreen = () => {
   const router = useRouter();
