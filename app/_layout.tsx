@@ -5,6 +5,9 @@ import NetInfo from "@react-native-community/netinfo";
 import { Menu, Divider, PaperProvider } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+
 
 import "../global.css";
 
@@ -22,6 +25,13 @@ const HomeLayout = () => {
       unsubscribe();
     };
   }, []);
+
+  // Resetear el estado del menú al cambiar de pantalla
+  useFocusEffect(
+    useCallback(() => {
+      setMenuVisible(false);
+    }, [])
+  );
 
   return (
     <PaperProvider>
@@ -48,9 +58,21 @@ const HomeLayout = () => {
                   </TouchableOpacity>
                 }
               >
-                <Menu.Item onPress={() => router.push("/login")} title="Iniciar Sesión" />
+                <Menu.Item
+                  onPress={() => {
+                    setMenuVisible(false);
+                    router.push("/login");
+                  }}
+                  title="Iniciar Sesión"
+                />
                 <Divider />
-                <Menu.Item onPress={() => router.push("/register")} title="Registrarse" />
+                <Menu.Item
+                  onPress={() => {
+                    setMenuVisible(false);
+                    router.push("/register");
+                  }}
+                  title="Registrarse"
+                />
               </Menu>
             </View>
           ),
