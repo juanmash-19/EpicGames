@@ -1,24 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import legoFortnite from "../../assets/lego_fortnite.jpg";  
+import { useRouter } from "expo-router";
+import legoFortnite from "../../assets/lego_fortnite.jpg";
+import princeOfPersia from "../../assets/prince_of_persia.jpg";
 
 const CartScreen = () => {
+  const router = useRouter();
+  const [cartItems, setCartItems] = useState([
+    { id: 1, title: "LEGO FORTNITE", description: "Fantasy, Violence 10+", image: legoFortnite },
+    { id: 2, title: "Prince of Persia: The Lost Crown", description: "Action, Adventure 12+", image: princeOfPersia },
+  ]);
+
+  const removeItem = (id) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Mi carrito</Text>
-      <View style={styles.itemContainer}>
-        <Image source={legoFortnite} style={styles.image} />
-        <View style={styles.itemDetails}>
-          <Text style={styles.itemTitle}>LEGO FORTNITE</Text>
-          <Text style={styles.itemDescription}>Fantasy, Violence 10+</Text>
-          <TouchableOpacity style={styles.removeButton}>
-            <Text style={styles.removeText}>Eliminar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.wishlistButton}>
-            <Text style={styles.wishlistText}>Lista de Deseos</Text>
-          </TouchableOpacity>
+      <Text style={styles.header}>Mi carrito de compras</Text>
+      
+      {cartItems.map(item => (
+        <View key={item.id} style={styles.itemContainer}>
+          <Image source={item.image} style={styles.image} />
+          <View style={styles.itemDetails}>
+            <Text style={styles.itemTitle}>{item.title}</Text>
+            <Text style={styles.itemDescription}>{item.description}</Text>
+            <TouchableOpacity style={styles.removeButton} onPress={() => removeItem(item.id)}>
+              <Text style={styles.removeText}>Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/wishlist") }>
+              <Text style={styles.wishlistText}>Lista de Deseos</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      ))}
       
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryTitle}>Resumen de compra</Text>
@@ -26,7 +41,7 @@ const CartScreen = () => {
         <Text style={styles.summaryText}>SubTotal: COP</Text>
       </View>
       
-      <TouchableOpacity style={styles.checkoutButton}>
+      <TouchableOpacity style={styles.checkoutButton} onPress={() => router.push("/checkout") }>
         <Text style={styles.checkoutText}>Finalizar Compra</Text>
       </TouchableOpacity>
     </View>
