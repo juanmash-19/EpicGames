@@ -58,7 +58,7 @@ const HomeLayout = () => {
       >
         <Drawer.Screen name="Home" options={{ drawerLabel: "Home", title: "Home" }} />
         <Drawer.Screen name="(auth)" options={{ drawerLabel: "Autenticación", title: "Autenticación" }} />
-        <Drawer.Screen name="gameLibrary" options={{ drawerLabel: "Biblioteca de Juegos", title: "Biblioteca" }} />
+        <Drawer.Screen name="Biblioteca" options={{ drawerLabel: "Biblioteca de Juegos", title: "Biblioteca" }} />
         <Drawer.Screen name="gameStore" options={{ drawerLabel: "Tienda de Juegos", title: "Tienda" }} />
         <Drawer.Screen name="notices" options={{ drawerLabel: "Noticias", title: "Noticias" }} />
         <Drawer.Screen name="wishlist" options={{ drawerLabel: "Lista de Deseos", title: "Lista de Deseos" }} />

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Switch, Alert } from "react-native";
+import { 
+  View, Text, TextInput, TouchableOpacity, StyleSheet, 
+  Image, Switch, Alert 
+} from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +26,7 @@ const RegisterPage: React.FC = () => {
 
   const countries = [
     { label: "Colombia", value: "colombia" },
-    { label: "México", value: "mexico" },
+    { label: "México", value: "mexico" },
     { label: "Argentina", value: "argentina" },
   ];
 
@@ -31,40 +35,80 @@ const RegisterPage: React.FC = () => {
       const storedCountry = await AsyncStorage.getItem("country");
       setCountry(storedCountry !== null ? storedCountry : "");
     } catch (error) {
-      console.log("Error al cargar el país:", error);
+      console.log("Error al cargar el país:", error);
     }
   };
 
-  // Guardar datos en AsyncStorage
-  const handleSubmit = async () => {
-    if (!acceptTerms) {
-      Alert.alert("Error", "Debes aceptar los términos y condiciones.");
-      return;
+  // Validar los datos ingresados antes de registrar al usuario
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      Alert.alert("Error", "Correo electrónico inválido.");
+      return false;
     }
+    if (!firstName || !lastName || !username) {
+      Alert.alert("Error", "Todos los campos deben estar completos.");
+      return false;
+    }
+    if (password.length < 6) {
+      Alert.alert("Error", "La contraseña debe tener al menos 6 caracteres.");
+      return false;
+    }
+    if (!acceptTerms) {
+      Alert.alert("Error", "Debes aceptar los términos y condiciones.");
+      return false;
+    }
+    return true;
+  };
+
+  // Guardar usuario en AsyncStorage y permitir login
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
 
     try {
-      await AsyncStorage.setItem("email", email);
-      await AsyncStorage.setItem("country", country);
-      await AsyncStorage.setItem("firstName", firstName);
-      await AsyncStorage.setItem("lastName", lastName);
-      await AsyncStorage.setItem("username", username);
-      await AsyncStorage.setItem("subscribe", JSON.stringify(subscribe));
+      const storedUsers = await AsyncStorage.getItem("users");
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-      console.log("Datos de registro guardados:", { email, country, firstName, lastName, username, password, acceptTerms, subscribe });
+      // Verificar si users es un array válido
+      if (!Array.isArray(users)) {
+        console.error("Error: users no es un array válido", users);
+        Alert.alert("Error", "Hubo un problema al guardar el usuario.");
+        return;
+      }
+
+      // Verificar si el usuario ya está registrado
+      const userExists = users.find((user) => user.email === email);
+
+      if (userExists) {
+        Alert.alert("Error", "Este correo ya está registrado.");
+        return;
+      }
+
+      // Agregar nuevo usuario a la lista
+      const newUser = { email, firstName, lastName, username, password, country, subscribe };
+      users.push(newUser);
+
+      await AsyncStorage.setItem("users", JSON.stringify(users));
+
+      console.log("✅ Usuario registrado:", newUser);
       Alert.alert("Registro exitoso", "Tu cuenta ha sido creada correctamente.");
+      
+      // Redirigir a la pantalla de Login (ajústalo según tu navegación)
+      router.push("/auth/login");
     } catch (error) {
-      console.log("Error al guardar datos:", error);
+      console.error("Error al guardar usuario:", error);
     }
   };
 
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
-      <Text style={styles.title}>Regístrate</Text>
+      <Text style={styles.title}>Regístrate</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Correo electrónico"
+        placeholder="Correo electrónico"
         placeholderTextColor="#aaa"
         value={email}
         onChangeText={setEmail}
@@ -77,11 +121,11 @@ const RegisterPage: React.FC = () => {
         data={countries}
         labelField="label"
         valueField="value"
-        placeholder="Selecciona tu país"
+        placeholder="Selecciona tu país"
         placeholderStyle={{ color: "#aaa" }}
         selectedTextStyle={{ color: "#fff" }}
         itemTextStyle={{ color: "#000" }}
-        value={country || ""} // Manejo de valores vacíos
+        value={country || ""}
         onChange={(item) => setCountry(item.value)}
       />
 
@@ -111,7 +155,7 @@ const RegisterPage: React.FC = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Contraseña"
+        placeholder="Contraseña"
         placeholderTextColor="#aaa"
         value={password}
         onChangeText={setPassword}
@@ -125,7 +169,7 @@ const RegisterPage: React.FC = () => {
 
       <View style={styles.switchContainer}>
         <Switch value={acceptTerms} onValueChange={setAcceptTerms} />
-        <Text style={styles.switchText}>Acepto los términos del servicio</Text>
+        <Text style={styles.switchText}>Acepto los términos del servicio</Text>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>

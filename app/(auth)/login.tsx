@@ -1,34 +1,79 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from "react-native";
+import { 
+  View, Text, TextInput, TouchableOpacity, StyleSheet, 
+  Image, Linking, Alert 
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
-    loadEmail();
+    loadCredentials();
   }, []);
 
-  const loadEmail = async () => {
+  // Cargar credenciales almacenadas
+  const loadCredentials = async () => {
     try {
       const storedEmail = await AsyncStorage.getItem("userEmail");
-      if (storedEmail) {
-        setEmail(storedEmail);
-      }
+      const storedPassword = await AsyncStorage.getItem("userPassword");
+      if (storedEmail) setEmail(storedEmail);
+      if (storedPassword) setPassword(storedPassword);
     } catch (error) {
-      console.error("Error al cargar el correo", error);
+      console.error("Error al cargar las credenciales", error);
     }
   };
 
+  // Validar formato del correo y contraseña
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("❌ Correo electrónico inválido.");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("❌ La contraseña debe tener al menos 6 caracteres.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
   const handleLogin = async () => {
+    if (!validateForm()) return;
+
     try {
+      const storedUsers = await AsyncStorage.getItem("users");
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+      // Verificar si users es un array válido
+      if (!Array.isArray(users)) {
+        console.error("Error: users no es un array válido", users);
+        Alert.alert("Error", "Hubo un problema al cargar los usuarios.");
+        return;
+      }
+
+      // Buscar si el usuario existe
+      const userExists = users.find((user) => user.email === email && user.password === password);
+
+      if (!userExists) {
+        Alert.alert("Error", "El usuario no está registrado o las credenciales son incorrectas.");
+        return;
+      }
+
+      // Si el usuario existe, guardar sus credenciales y permitir el acceso
       await AsyncStorage.setItem("userEmail", email);
-      console.log("Correo guardado:", email);
+      await AsyncStorage.setItem("userPassword", password);
+      console.log("✅ Inicio de sesión exitoso:", { email });
+
+      Alert.alert("¡Inicio de sesión exitoso!", "Bienvenido de nuevo.");
     } catch (error) {
-      console.error("Error al guardar el correo", error);
+      console.error("Error al validar el inicio de sesión", error);
     }
   };
 
@@ -37,21 +82,33 @@ const LoginPage: React.FC = () => {
       <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       
       <Text style={styles.title}>Inicia Sesión</Text>
-      
+
       <TextInput
         style={styles.input}
-        placeholder="Correo :"
+        placeholder="Correo electrónico"
         placeholderTextColor="#aaa"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      
+
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Continuar</Text>
       </TouchableOpacity>
 
+      {/* Redes Sociales */}
       <View style={styles.socialContainer}>
         <TouchableOpacity onPress={() => Linking.openURL("https://www.xbox.com/")}> 
           <Image source={require("../../assets/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
@@ -92,9 +149,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#444",
     borderRadius: 8,
-    marginBottom: 25, 
+    marginBottom: 15, 
     color: "#fff",
     backgroundColor: "#111",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginBottom: 10,
   },
   button: {
     backgroundColor: "#007bff",
