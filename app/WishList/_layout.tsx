@@ -12,7 +12,7 @@ const WishlistScreen = () => {
       <Text style={styles.header}>Lista de deseos</Text>
       
       <View style={styles.wishlistItem}>
-        <Image source={require("../(auth)/Fornite.jpg")} style={styles.image} />
+        <Image source={require("../../assets/Fornite.jpg")} style={styles.image} />
         <View style={styles.details}>
           <Text style={styles.title}>FORNITE</Text>
           <Text style={styles.description}>Violence, Blood, Teen</Text>

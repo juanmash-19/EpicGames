@@ -7,7 +7,7 @@ const NewsComponent = () => {
       <Text style={styles.header}>Noticias</Text>
       
       <View style={styles.newsItem}>
-        <Image source={require("../(auth)/ImgNoti1.png")} style={styles.image} />
+        <Image source={require("../../assets/ImgNoti1.png")} style={styles.image} />
         <Text style={styles.title}>Dying Light 2</Text>
         <Text style={styles.description}>
           Celebra su segundo aniversario con otros tres años de soporte a la vista
@@ -18,7 +18,7 @@ const NewsComponent = () => {
       </View>
 
       <View style={styles.newsItem}>
-        <Image source={require("../(auth)/ImgNoti2.png")} style={styles.image} />
+        <Image source={require("../../assets/ImgNoti2.png")} style={styles.image} />
         <Text style={styles.title}>Guía para el Black Friday de la Epic Games Store</Text>
         <Text style={styles.description}>
           ¡Cupones Epic del 33 % infinitos y un 10 % en las recompensas de Epic!

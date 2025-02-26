@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Switch, Alert } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import { useNavigation } from "@react-navigation/native";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,11 @@ const RegisterPage: React.FC = () => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
   const [country, setCountry] = useState(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({ headerShown: false }); // Oculta el header
+  }, []);
 
   const countries = [
     { label: "Colombia", value: "colombia" },
@@ -29,7 +35,7 @@ const RegisterPage: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
+      <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       <Text style={styles.title}>Regístrate</Text>
 
       <TextInput
