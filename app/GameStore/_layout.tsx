@@ -48,8 +48,7 @@ const GameLibrary = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
-    paddingHorizontal: 15,
+    backgroundColor: "#000", 
   },
   header: {
     fontSize: 24,

@@ -48,9 +48,9 @@ const HomeLayout = () => {
                   </TouchableOpacity>
                 }
               >
-                <Menu.Item onPress={() => router.push("/(auth)/login")} title="Iniciar Sesión" />
+                <Menu.Item onPress={() => router.push("/login")} title="Iniciar Sesión" />
                 <Divider />
-                <Menu.Item onPress={() => router.push("/(auth)/register")} title="Registrarse" />
+                <Menu.Item onPress={() => router.push("/register")} title="Registrarse" />
               </Menu>
             </View>
           ),

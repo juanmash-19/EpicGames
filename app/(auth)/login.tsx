@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from "react-native";
-import { useNavigation } from "@react-navigation/native"; 
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, SafeAreaView } from "react-native";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: false }); // Oculta la barra superior
+    navigation.setOptions({ headerShown: false }); 
   }, []);
 
   const handleLogin = () => {
@@ -15,46 +14,52 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
-      
-      <Text style={styles.title}>Inicia Sesión</Text>
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Correo :"
-        placeholderTextColor="#aaa"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Continuar</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={styles.safeContainer}>
+      <View style={styles.container}>
+        <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
+        
+        <Text style={styles.title}>Inicia Sesión</Text>
+        
+        <TextInput
+          style={styles.input}
+          placeholder="Correo :"
+          placeholderTextColor="#aaa"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Continuar</Text>
+        </TouchableOpacity>
 
-      <View style={styles.socialContainer}>
-        <TouchableOpacity onPress={() => Linking.openURL("https://www.xbox.com/")}> 
-          <Image source={require("../../assets/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL("https://www.google.com/")}> 
-          <Image source={require("../../assets/google.png")} style={[styles.socialLogo, styles.googleLogo]} resizeMode="contain" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL("https://www.playstation.com/")}> 
-          <Image source={require("../../assets/play.png")} style={styles.socialLogo} resizeMode="contain" />
-        </TouchableOpacity>
+        <View style={styles.socialContainer}>
+          <TouchableOpacity onPress={() => Linking.openURL("https://www.xbox.com/")}> 
+            <Image source={require("../(auth)/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL("https://www.google.com/")}> 
+            <Image source={require("../(auth)/google.png")} style={[styles.socialLogo, styles.googleLogo]} resizeMode="contain" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL("https://www.playstation.com/")}> 
+            <Image source={require("../(auth)/play.png")} style={styles.socialLogo} resizeMode="contain" />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
   container: {
     flex: 1,
     justifyContent: "center", 
     alignItems: "center",
-    backgroundColor: "#000", // Fondo completamente negro
+    backgroundColor: "#000", 
     width: "100%"
   },
   logo: {

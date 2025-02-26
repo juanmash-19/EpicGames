@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -10,21 +10,31 @@ const Index = () => {
           <Image source={require("../assets/logo.png")} className="w-40 h-20" resizeMode="contain" />
         </View>
 
-        <View className="gap-6">
-          <View className="bg-gray-900 p-4 rounded-lg">
-            <Image source={require("../assets/prince_of_persia.jpg")} className="w-full h-40 rounded-lg" />
-            <Text className="text-white text-xl mt-2">Prince of Persia: The Lost Crown</Text>
-            <Text className="text-gray-400">Sumérgete en un emocionante y sofisticado juego de plataformas...</Text>
-            <Text className="text-white font-bold">COP 199,900</Text>
-          </View>
+        <Text className="text-white text-2xl font-bold mb-4">Mi carrito</Text>
 
-          <View className="bg-gray-900 p-4 rounded-lg">
-            <Image source={require("../assets/lego_fortnite.jpg")} className="w-full h-40 rounded-lg" />
-            <Text className="text-white text-xl mt-2">LEGO® Fortnite</Text>
-            <Text className="text-gray-400">Explora vastos mundos abiertos donde la magia de LEGO...</Text>
-            <Text className="text-white font-bold">Gratis</Text>
+        <View className="bg-gray-900 p-4 rounded-lg flex flex-row items-center mb-4">
+          <Image source={require("../assets/lego_fortnite.jpg")} className="w-24 h-24 rounded-lg" />
+          <View className="ml-4 flex-1">
+            <Text className="text-white text-lg font-bold">LEGO® Fortnite</Text>
+            <Text className="text-gray-400">Fantasy, Violence 10+</Text>
+            <TouchableOpacity className="bg-red-600 px-3 py-1 rounded mt-2">
+              <Text className="text-white text-center">Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="border border-white px-3 py-1 rounded mt-2">
+              <Text className="text-white text-center">Lista de Deseos</Text>
+            </TouchableOpacity>
           </View>
         </View>
+
+        <View className="bg-gray-900 p-4 rounded-lg mb-4">
+          <Text className="text-white text-xl font-bold mb-2">Resumen de compra</Text>
+          <Text className="text-gray-400">Precio: COP</Text>
+          <Text className="text-gray-400">SubTotal: COP</Text>
+        </View>
+
+        <TouchableOpacity className="bg-blue-600 p-4 rounded-lg text-center">
+          <Text className="text-white font-bold text-center">Finalizar Compra</Text>
+        </TouchableOpacity>
       </ScrollView>
 
       <View className="absolute bottom-0 left-0 right-0 flex flex-row justify-around p-4 bg-black">
