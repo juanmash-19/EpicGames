@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import Icon from "react-native-vector-icons/FontAwesome";  // Importación de Icon
 import legoFortnite from "../../assets/lego_fortnite.jpg";
 import princeOfPersia from "../../assets/prince_of_persia.jpg";
 
@@ -18,7 +19,7 @@ const CartScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Mi carrito de compras</Text>
-      
+
       {cartItems.map(item => (
         <View key={item.id} style={styles.itemContainer}>
           <Image source={item.image} style={styles.image} />
@@ -28,22 +29,30 @@ const CartScreen = () => {
             <TouchableOpacity style={styles.removeButton} onPress={() => removeItem(item.id)}>
               <Text style={styles.removeText}>Eliminar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/wishlist") }>
+            <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/wishlist")}>
               <Text style={styles.wishlistText}>Lista de Deseos</Text>
             </TouchableOpacity>
           </View>
         </View>
       ))}
-      
+
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryTitle}>Resumen de compra</Text>
         <Text style={styles.summaryText}>Precio: COP</Text>
         <Text style={styles.summaryText}>SubTotal: COP</Text>
       </View>
-      
-      <TouchableOpacity style={styles.checkoutButton} onPress={() => router.push("/checkout") }>
+
+      <TouchableOpacity style={styles.checkoutButton} onPress={() => router.push("/checkout")}>
         <Text style={styles.checkoutText}>Finalizar Compra</Text>
       </TouchableOpacity>
+
+      {/* Barra de navegación inferior */}
+      <View style={styles.bottomNav}>
+        <Icon name="home" size={25} color="#fff" />
+        <Icon name="shopping-cart" size={25} color="#fff" />
+        <Icon name="heart" size={25} color="#fff" />
+        <Icon name="gift" size={25} color="#fff" />
+      </View>
     </View>
   );
 };
@@ -136,6 +145,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  bottomNav: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      backgroundColor: "#000",
+      paddingVertical: 10,
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
   },
 });
 

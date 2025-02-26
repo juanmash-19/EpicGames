@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome"; // Importación de los íconos
 
 const WishlistScreen = () => {
   const [showGenre, setShowGenre] = useState(false);
@@ -8,43 +9,53 @@ const WishlistScreen = () => {
   const [showPlatform, setShowPlatform] = useState(false);
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Lista de deseos</Text>
-      
-      <View style={styles.wishlistItem}>
-        <Image source={require("../../assets/Fornite.jpg")} style={styles.image} />
-        <View style={styles.details}>
-          <Text style={styles.title}>FORNITE</Text>
-          <Text style={styles.description}>Violence, Blood, Teen</Text>
-          <TouchableOpacity>
-            <Text style={styles.removeText}>Eliminar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.addButton}>
-            <Text style={styles.addButtonText}>Añadir al carrito</Text>
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
+        <Text style={styles.header}>Lista de deseos</Text>
+
+        <View style={styles.wishlistItem}>
+          <Image source={require("../../assets/Fornite.jpg")} style={styles.image} />
+          <View style={styles.details}>
+            <Text style={styles.title}>FORNITE</Text>
+            <Text style={styles.description}>Violence, Blood, Teen</Text>
+            <TouchableOpacity>
+              <Text style={styles.removeText}>Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.addButton}>
+              <Text style={styles.addButtonText}>Añadir al carrito</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
+        <View style={styles.filterContainer}>
+          <TouchableOpacity style={styles.filterItem} onPress={() => setShowGenre(!showGenre)}>
+            <Text style={styles.filterText}>GÉNERO</Text>
+            <AntDesign name={showGenre ? "up" : "down"} size={20} color="white" />
+          </TouchableOpacity>
+          {showGenre && <Text style={styles.filterOptions}>Acción, Aventura, Battle Royale</Text>}
+
+          <TouchableOpacity style={styles.filterItem} onPress={() => setShowFeatures(!showFeatures)}>
+            <Text style={styles.filterText}>CARACTERÍSTICAS</Text>
+            <AntDesign name={showFeatures ? "up" : "down"} size={20} color="white" />
+          </TouchableOpacity>
+          {showFeatures && <Text style={styles.filterOptions}>Multijugador, Cross-Play</Text>}
+
+          <TouchableOpacity style={styles.filterItem} onPress={() => setShowPlatform(!showPlatform)}>
+            <Text style={styles.filterText}>PLATAFORMA</Text>
+            <AntDesign name={showPlatform ? "up" : "down"} size={20} color="white" />
+          </TouchableOpacity>
+          {showPlatform && <Text style={styles.filterOptions}>PC, PlayStation, Xbox</Text>}
+        </View>
+      </ScrollView>
+
+      {/* 🔹 Barra de Navegación */}
+      <View style={styles.bottomNav}>
+        <Icon name="home" size={25} color="#fff" />
+        <Icon name="shopping-cart" size={25} color="#fff" />
+        <Icon name="heart" size={25} color="#fff" />
+        <Icon name="gift" size={25} color="#fff" />
       </View>
-
-      <View style={styles.filterContainer}>
-        <TouchableOpacity style={styles.filterItem} onPress={() => setShowGenre(!showGenre)}>
-          <Text style={styles.filterText}>GÉNERO</Text>
-          <AntDesign name={showGenre ? "up" : "down"} size={20} color="white" />
-        </TouchableOpacity>
-        {showGenre && <Text style={styles.filterOptions}>Acción, Aventura, Battle Royale</Text>}
-
-        <TouchableOpacity style={styles.filterItem} onPress={() => setShowFeatures(!showFeatures)}>
-          <Text style={styles.filterText}>CARACTERÍSTICAS</Text>
-          <AntDesign name={showFeatures ? "up" : "down"} size={20} color="white" />
-        </TouchableOpacity>
-        {showFeatures && <Text style={styles.filterOptions}>Multijugador, Cross-Play</Text>}
-
-        <TouchableOpacity style={styles.filterItem} onPress={() => setShowPlatform(!showPlatform)}>
-          <Text style={styles.filterText}>PLATAFORMA</Text>
-          <AntDesign name={showPlatform ? "up" : "down"} size={20} color="white" />
-        </TouchableOpacity>
-        {showPlatform && <Text style={styles.filterOptions}>PC, PlayStation, Xbox</Text>}
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -123,6 +134,16 @@ const styles = StyleSheet.create({
     color: "#aaa",
     padding: 10,
     fontSize: 14,
+  },
+  bottomNav: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#000",
+    paddingVertical: 10,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
 
