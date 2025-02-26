@@ -6,8 +6,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const CartScreen = () => {
   const router = useRouter();
   const [cartItems, setCartItems] = useState([
-    { id: 1, title: "LEGO FORTNITE", description: "Fantasy, Violence 10+", image: require("../../assets/lego_fortnite.jpg") },
-    { id: 2, title: "Prince of Persia: The Lost Crown", description: "Action, Adventure 12+", image: require("../../assets/prince_of_persia.jpg") },
+    { id: 1, title: "LEGO FORTNITE", description: "Fantasy, Violence 10+", image: require("../../assets/lego_fortnite.png") },
+    { id: 2, title: "Prince of Persia: The Lost Crown", description: "Action, Adventure 12+", image: require("../../assets/prince_of_persia.png") },
   ]);
 
   const removeItem = (id) => {
