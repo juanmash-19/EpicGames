@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, SafeAreaView } from "react-native";
+import { useNavigation } from "@react-navigation/native";  // Importación corregida
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -7,7 +8,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false }); 
-  }, []);
+  }, [navigation]);  // Se agregó la dependencia correcta
 
   const handleLogin = () => {
     console.log("Login con:", { email });
@@ -16,8 +17,7 @@ const LoginPage: React.FC = () => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
-        <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
-        
+        <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Inicia Sesión</Text>
         
         <TextInput
@@ -36,13 +36,13 @@ const LoginPage: React.FC = () => {
 
         <View style={styles.socialContainer}>
           <TouchableOpacity onPress={() => Linking.openURL("https://www.xbox.com/")}> 
-            <Image source={require("../(auth)/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
+            <Image source={require("../../assets/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Linking.openURL("https://www.google.com/")}> 
-            <Image source={require("../(auth)/google.png")} style={[styles.socialLogo, styles.googleLogo]} resizeMode="contain" />
+            <Image source={require("../../assets/google.png")} style={[styles.socialLogo, styles.googleLogo]} resizeMode="contain" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Linking.openURL("https://www.playstation.com/")}> 
-            <Image source={require("../(auth)/play.png")} style={styles.socialLogo} resizeMode="contain" />
+            <Image source={require("../../assets/play.png")} style={styles.socialLogo} resizeMode="contain" />
           </TouchableOpacity>
         </View>
       </View>
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   googleLogo: {
-    width: 150,
-    height: 150,
+    width: 60, 
+    height: 60,  
   },
 });
 

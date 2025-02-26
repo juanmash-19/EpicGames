@@ -1,13 +1,13 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import legoFortnite from "../../assets/lego_fortnite.jpg";  // Importa la imagen
 
 const CartScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Mi carrito</Text>
-      
       <View style={styles.itemContainer}>
-        <Image source={require("../assets/lego_fortnite.jpg")} style={styles.image} />
+        <Image source={legoFortnite} style={styles.image} />
         <View style={styles.itemDetails}>
           <Text style={styles.itemTitle}>LEGO FORTNITE</Text>
           <Text style={styles.itemDescription}>Fantasy, Violence 10+</Text>
