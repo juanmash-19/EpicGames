@@ -1,7 +1,10 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { useRouter } from "expo-router";
 
 const GameLibrary = () => {
+  const router = useRouter();
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Compra de Juegos</Text>
@@ -13,7 +16,7 @@ const GameLibrary = () => {
           Vive una aventura épica en un mundo abierto lleno de criaturas y magia.
         </Text>
         <Text style={styles.price}>COP 119,900</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/juego1")}>
           <Text style={styles.details}>Ver Detalles</Text>
         </TouchableOpacity>
       </View>
@@ -25,7 +28,7 @@ const GameLibrary = () => {
           Explora el salvaje oeste con una historia impactante y un mundo vivo.
         </Text>
         <Text style={styles.price}>COP 149,900</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/juego1")}>
           <Text style={styles.details}>Ver Detalles</Text>
         </TouchableOpacity>
       </View>
@@ -37,7 +40,7 @@ const GameLibrary = () => {
           Sumérgete en Night City con acción, tecnología y decisiones impactantes.
         </Text>
         <Text style={styles.price}>COP 159,900</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/juego1")}>
           <Text style={styles.details}>Ver Detalles</Text>
         </TouchableOpacity>
       </View>
@@ -48,7 +51,8 @@ const GameLibrary = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000", 
+    backgroundColor: "#000",
+    padding: 20,
   },
   header: {
     fontSize: 24,

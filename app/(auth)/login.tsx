@@ -5,6 +5,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+
+
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -71,7 +74,7 @@ const LoginPage: React.FC = () => {
       await AsyncStorage.setItem("userPassword", password);
       console.log("✅ Inicio de sesión exitoso:", { email });
 
-      Alert.alert("¡Inicio de sesión exitoso!", "Bienvenido de nuevo.");
+      router.push("/Home");
     } catch (error) {
       console.error("Error al validar el inicio de sesión", error);
     }

@@ -95,7 +95,7 @@ const RegisterPage: React.FC = () => {
       Alert.alert("Registro exitoso", "Tu cuenta ha sido creada correctamente.");
       
       // Redirigir a la pantalla de Login (ajústalo según tu navegación)
-      router.push("/auth/login");
+      router.push("/login");
     } catch (error) {
       console.error("Error al guardar usuario:", error);
     }
