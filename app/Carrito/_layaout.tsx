@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import legoFortnite from "../../assets/lego_fortnite.jpg";  // Importa la imagen
+import legoFortnite from "../../assets/lego_fortnite.jpg";  
 
 const CartScreen = () => {
   return (
