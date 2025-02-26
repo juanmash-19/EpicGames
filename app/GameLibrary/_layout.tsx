@@ -1,92 +1,90 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, FlatList, StyleSheet, SafeAreaView, Image } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+
+const games = [
+  {
+    id: "1",
+    title: "Doors - Paradox",
+    image: require("../../assets/biblioteca1.png"),
+  },
+  {
+    id: "2",
+    title: "Marvel's Guardians of the Galaxy",
+    image: require("../../assets/biblioteca2.png"),
+  },
+  {
+    id: "3",
+    title: "Snakebird Complete",
+    image: require("../../assets/biblioteca3.png"),
+  },
+];
 
 const GameLibrary = () => {
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Biblioteca de Juegos</Text>
-
-      <View style={styles.gameItem}>
-        <Image source={require("../../assets/Fornite.jpg")} style={styles.image} />
-        <Text style={styles.title}>The Witcher 3: Wild Hunt</Text>
-        <Text style={styles.description}>
-          Vive una aventura épica en un mundo abierto lleno de criaturas y magia.
-        </Text>
-        <TouchableOpacity>
-          <Text style={styles.details}>Ver Detalles</Text>
-        </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Biblioteca</Text>
+        <FlatList
+          data={games}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.gameCard}>
+              <Text style={styles.gameTitle}>{item.title}</Text>
+              <Image source={item.image} style={styles.gameImage} />
+            </View>
+          )}
+        />
       </View>
 
-      <View style={styles.gameItem}>
-        <Image source={require("../../assets/lego_fortnite.png")} style={styles.image} />
-        <Text style={styles.title}>Red Dead Redemption 2</Text>
-        <Text style={styles.description}>
-          Explora el salvaje oeste con una historia impactante y un mundo vivo.
-        </Text>
-        <TouchableOpacity>
-          <Text style={styles.details}>Ver Detalles</Text>
-        </TouchableOpacity>
+      <View style={styles.bottomNav}>
+        <Icon name="home" size={25} color="#fff" />
+        <Icon name="shopping-cart" size={25} color="#fff" />
+        <Icon name="heart" size={25} color="#fff" />
+        <Icon name="gift" size={25} color="#fff" />
       </View>
-
-      <View style={styles.gameItem}>
-        <Image source={require("../../assets/prince_of_persia.png")} style={styles.image} />
-        <Text style={styles.title}>Cyberpunk 2077</Text>
-        <Text style={styles.description}>
-          Sumérgete en Night City con acción, tecnología y decisiones impactantes.
-        </Text>
-        <TouchableOpacity>
-          <Text style={styles.details}>Ver Detalles</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#000",
-    paddingHorizontal: 15,
+  },
+  container: {
+    flex: 1,
+    padding: 10,
   },
   header: {
-    fontSize: 24,
-    fontWeight: "bold",
     color: "#fff",
-    marginVertical: 15,
-  },
-  gameItem: {
-    backgroundColor: "#111",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 20,
-  },
-  image: {
-    width: "100%",
-    height: 180,
-    borderRadius: 10,
+    fontSize: 20,
+    fontWeight: "bold",
     marginBottom: 10,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 5,
-  },
-  description: {
-    fontSize: 14,
-    color: "#aaa",
+  gameCard: {
+    backgroundColor: "#222",
     marginBottom: 10,
+    borderRadius: 10,
+    padding: 10,
+    alignItems: "center",
   },
-  price: {
+  gameImage: {
+    width: 150,
+    height: 200,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  gameTitle: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
-    color: "#0f0",
-    marginBottom: 10,
   },
-  details: {
-    color: "#00aaff",
-    fontWeight: "bold",
-    fontSize: 14,
+  bottomNav: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 15,
+    backgroundColor: "#000",
   },
 });
 
