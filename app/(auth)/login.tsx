@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
+      <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       
       <Text style={styles.title}>Inicia Sesión</Text>
       
@@ -30,13 +30,13 @@ const LoginPage: React.FC = () => {
 
       <View style={styles.socialContainer}>
         <TouchableOpacity onPress={() => Linking.openURL("https://www.xbox.com/")}> 
-          <Image source={require("../(auth)/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
+          <Image source={require("../../assets/xbox.png")} style={styles.socialLogo} resizeMode="contain" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Linking.openURL("https://www.google.com/")}> 
-          <Image source={require("../(auth)/google.png")} style={[styles.socialLogo, styles.googleLogo]} resizeMode="contain" />
+          <Image source={require("../../assets/google.png")} style={[styles.socialLogo, styles.googleLogo]} resizeMode="contain" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Linking.openURL("https://www.playstation.com/")}> 
-          <Image source={require("../(auth)/play.png")} style={styles.socialLogo} resizeMode="contain" />
+          <Image source={require("../../assets/play.png")} style={styles.socialLogo} resizeMode="contain" />
         </TouchableOpacity>
       </View>
     </View>

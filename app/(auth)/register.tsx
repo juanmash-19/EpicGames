@@ -29,7 +29,7 @@ const RegisterPage: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../(auth)/logo.png")} style={styles.logo} resizeMode="contain" />
+      <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       <Text style={styles.title}>Regístrate</Text>
 
       <TextInput
