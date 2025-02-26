@@ -12,14 +12,14 @@ const Index = () => {
 
         <View className="gap-6">
           <View className="bg-gray-900 p-4 rounded-lg">
-            <Image source={require("../../assets/prince_of_persia.jpg")} className="w-full h-40 rounded-lg" />
+            <Image source={require("../../assets/prince_of_persia.png")} className="w-full h-40 rounded-lg" />
             <Text className="text-white text-xl mt-2">Prince of Persia: The Lost Crown</Text>
             <Text className="text-gray-400">Sumérgete en un emocionante y sofisticado juego de plataformas...</Text>
             <Text className="text-white font-bold">COP 199,900</Text>
           </View>
 
           <View className="bg-gray-900 p-4 rounded-lg">
-            <Image source={require("../../assets/lego_fortnite.jpg")} className="w-full h-40 rounded-lg" />
+            <Image source={require("../../assets/lego_fortnite.png")} className="w-full h-40 rounded-lg" />
             <Text className="text-white text-xl mt-2">LEGO® Fortnite</Text>
             <Text className="text-gray-400">Explora vastos mundos abiertos donde la magia de LEGO...</Text>
             <Text className="text-white font-bold">Gratis</Text>
