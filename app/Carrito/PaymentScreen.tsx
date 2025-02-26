@@ -4,12 +4,18 @@ import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import visaIcon from "../../assets/visa.jpg";
 import mastercardIcon from "../../assets/mastercard.png";
+import { useNavigation } from "@react-navigation/native";
 
 const PaymentScreen = () => {
   const router = useRouter();
+  const navigation = useNavigation();
   const { control, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data: any) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+
+  const onSubmit = (data) => {
     console.log("Datos de pago:", data);
     router.push("/success"); 
   };
@@ -100,7 +106,7 @@ const PaymentScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
     padding: 20,
     borderRadius: 10,
     alignItems: "center",
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 15,
-    color: "#000",
+    color: "#fff",
   },
   cardIcons: {
     flexDirection: "row",
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 5,
-    color: "#000",
+    color: "#fff",
   },
   radioGroup: {
     flexDirection: "row",
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
   },
   radioText: {
     fontSize: 16,
-    color: "#000",
+    color: "#fff",
   },
   payButton: {
     backgroundColor: "blue",
