@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -20,6 +21,8 @@ const LoginPage: React.FC = () => {
       }
     } catch (error) {
       console.error("Error al cargar el correo", error);
+    } finally {
+      setLoading(false); // Se detiene el indicador de carga
     }
   };
 
@@ -32,11 +35,25 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  // Componente dinámico de mensaje de bienvenida
+  const getGreetingMessage = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "¡Buenos días!";
+    if (hour < 18) return "¡Buenas tardes!";
+    return "¡Buenas noches!";
+  };
+
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       
-      <Text style={styles.title}>Inicia Sesión</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color="#007bff" />
+      ) : (
+        <Text style={styles.greeting}>{getGreetingMessage()}</Text>
+      )}
+
+      <Text style={styles.title}>Inicia Sesión</Text>
       
       <TextInput
         style={styles.input}
@@ -79,6 +96,11 @@ const styles = StyleSheet.create({
     width: 100,  
     height: 100, 
     marginBottom: 25,
+  },
+  greeting: {
+    fontSize: 20,
+    color: "#fff",
+    marginBottom: 15,
   },
   title: {
     fontSize: 22,
