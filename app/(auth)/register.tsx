@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Switch, Alert } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,36 +12,59 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
-  const [country, setCountry] = useState(null);
+  const [country, setCountry] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: false }); // Oculta el header
+    navigation.setOptions({ headerShown: false });
+    loadStoredData();
   }, []);
 
   const countries = [
     { label: "Colombia", value: "colombia" },
-    { label: "México", value: "mexico" },
+    { label: "México", value: "mexico" },
     { label: "Argentina", value: "argentina" },
   ];
 
-  const handleSubmit = () => {
+  const loadStoredData = async () => {
+    try {
+      const storedCountry = await AsyncStorage.getItem("country");
+      setCountry(storedCountry !== null ? storedCountry : "");
+    } catch (error) {
+      console.log("Error al cargar el país:", error);
+    }
+  };
+
+  // Guardar datos en AsyncStorage
+  const handleSubmit = async () => {
     if (!acceptTerms) {
-      Alert.alert("Error", "Debes aceptar los términos y condiciones.");
+      Alert.alert("Error", "Debes aceptar los términos y condiciones.");
       return;
     }
-    console.log("Datos de registro:", { email, country, firstName, lastName, username, password, acceptTerms, subscribe });
-    Alert.alert("Registro exitoso", "Tu cuenta ha sido creada correctamente.");
+
+    try {
+      await AsyncStorage.setItem("email", email);
+      await AsyncStorage.setItem("country", country);
+      await AsyncStorage.setItem("firstName", firstName);
+      await AsyncStorage.setItem("lastName", lastName);
+      await AsyncStorage.setItem("username", username);
+      await AsyncStorage.setItem("subscribe", JSON.stringify(subscribe));
+
+      console.log("Datos de registro guardados:", { email, country, firstName, lastName, username, password, acceptTerms, subscribe });
+      Alert.alert("Registro exitoso", "Tu cuenta ha sido creada correctamente.");
+    } catch (error) {
+      console.log("Error al guardar datos:", error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
-      <Text style={styles.title}>Regístrate</Text>
+      <Text style={styles.title}>Regístrate</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Correo electrónico"
+        placeholder="Correo electrónico"
         placeholderTextColor="#aaa"
         value={email}
         onChangeText={setEmail}
@@ -53,11 +77,11 @@ const RegisterPage: React.FC = () => {
         data={countries}
         labelField="label"
         valueField="value"
-        placeholder="Selecciona tu país"
+        placeholder="Selecciona tu país"
         placeholderStyle={{ color: "#aaa" }}
         selectedTextStyle={{ color: "#fff" }}
         itemTextStyle={{ color: "#000" }}
-        value={country}
+        value={country || ""} // Manejo de valores vacíos
         onChange={(item) => setCountry(item.value)}
       />
 
@@ -87,7 +111,7 @@ const RegisterPage: React.FC = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Contraseña"
+        placeholder="Contraseña"
         placeholderTextColor="#aaa"
         value={password}
         onChangeText={setPassword}
@@ -101,7 +125,7 @@ const RegisterPage: React.FC = () => {
 
       <View style={styles.switchContainer}>
         <Switch value={acceptTerms} onValueChange={setAcceptTerms} />
-        <Text style={styles.switchText}>Acepto los términos del servicio</Text>
+        <Text style={styles.switchText}>Acepto los términos del servicio</Text>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
