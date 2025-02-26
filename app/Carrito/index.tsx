@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome";  
@@ -27,7 +27,7 @@ const CartScreen = () => {
             <TouchableOpacity style={styles.removeButton} onPress={() => removeItem(item.id)}>
               <Text style={styles.removeText}>Eliminar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/wishlist") }>
+            <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/Wishlist") }>
               <Text style={styles.wishlistText}>Lista de Deseos</Text>
             </TouchableOpacity>
           </View>
@@ -45,10 +45,18 @@ const CartScreen = () => {
       </TouchableOpacity>
 
       <View style={styles.bottomNav}>
-        <Icon name="home" size={25} color="#fff" />
-        <Icon name="shopping-cart" size={25} color="#fff" />
-        <Icon name="heart" size={25} color="#fff" />
-        <Icon name="gift" size={25} color="#fff" />
+        <TouchableOpacity onPress={() => router.push("/Home")}>
+          <Icon name="home" size={25} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/Carrito")}>
+          <Icon name="shopping-cart" size={25} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/Wishlist")}>
+          <Icon name="heart" size={25} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/Gifts")}>
+          <Icon name="gift" size={25} color="#fff" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -58,8 +66,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
-    padding: 20,
-    paddingTop: 40,
+    paddingHorizontal: 20, 
+    justifyContent: "space-between", 
   },
   header: {
     fontSize: 24,
