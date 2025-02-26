@@ -31,7 +31,7 @@ const NewsComponent = () => {
         </View>
 
         <View style={styles.newsItem}>
-          <Image source={require("../../assets/noticia3.png")} style={styles.image} />
+          <Image source={require("../../assets/noticia4.png")} style={styles.image} />
           <Text style={styles.title}>Fab, Epic’s New Unified Content Marketplace, Launches Today!</Text>
           <Text style={styles.description}>
             Fab es un destino único donde puedes descubrir, comprar, vender y compartir activos digitales, ¡y ya está disponible!
