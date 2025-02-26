@@ -1,86 +1,96 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 
-const games = [
-  {
-    id: "1",
-    title: "Prince of Persia: The Lost Crown",
-    description: "Sumérgete en un emocionante y sofisticado juego de plataformas de acción y aventura.",
-    price: "COP 199,900",
-  },
-  {
-    id: "2",
-    title: "LEGO® Fortnite®",
-    description: "Explora vastos mundos abiertos donde la magia de LEGO® y Fortnite se fusionan.",
-    price: "Gratis",
-  },
-];
-
-const EpicGamesStore = () => {
+const GameLibrary = () => {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={games}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.gameCard}>
-            <View style={styles.imagePlaceholder} />
-            <Text style={styles.gameTitle}>{item.title}</Text>
-            <Text style={styles.gameDescription}>{item.description}</Text>
-            <Text style={styles.gamePrice}>{item.price}</Text>
-          </View>
-        )}
-      />
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Compra de Juegos</Text>
 
-      <View style={styles.bottomNav}>
-        <Icon name="home" size={25} color="#fff" />
-        <Icon name="shopping-cart" size={25} color="#fff" /> 
-        <Icon name="heart" size={25} color="#fff" /> 
-        <Icon name="gift" size={25} color="#fff" />
+      <View style={styles.gameItem}>
+        <Image source={require("../../assets/Fornite.jpg")} style={styles.image} />
+        <Text style={styles.title}>The Witcher 3: Wild Hunt</Text>
+        <Text style={styles.description}>
+          Vive una aventura épica en un mundo abierto lleno de criaturas y magia.
+        </Text>
+        <Text style={styles.price}>COP 119,900</Text>
+        <TouchableOpacity>
+          <Text style={styles.details}>Ver Detalles</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+
+      <View style={styles.gameItem}>
+        <Image source={require("../../assets/lego_fortnite.png")} style={styles.image} />
+        <Text style={styles.title}>Red Dead Redemption 2</Text>
+        <Text style={styles.description}>
+          Explora el salvaje oeste con una historia impactante y un mundo vivo.
+        </Text>
+        <Text style={styles.price}>COP 149,900</Text>
+        <TouchableOpacity>
+          <Text style={styles.details}>Ver Detalles</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.gameItem}>
+        <Image source={require("../../assets/prince_of_persia.png")} style={styles.image} />
+        <Text style={styles.title}>Cyberpunk 2077</Text>
+        <Text style={styles.description}>
+          Sumérgete en Night City con acción, tecnología y decisiones impactantes.
+        </Text>
+        <Text style={styles.price}>COP 159,900</Text>
+        <TouchableOpacity>
+          <Text style={styles.details}>Ver Detalles</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000", // Fondo negro
+    backgroundColor: "#000",
+    paddingHorizontal: 15,
   },
-  gameCard: {
-    backgroundColor: "#222",
-    margin: 10,
-    padding: 15,
-    borderRadius: 10,
-  },
-  imagePlaceholder: {
-    height: 150,
-    backgroundColor: "#444",
-    borderRadius: 10,
-  },
-  gameTitle: {
-    color: "#fff",
-    fontSize: 16,
+  header: {
+    fontSize: 24,
     fontWeight: "bold",
-    marginTop: 10,
-  },
-  gameDescription: {
-    color: "#aaa",
-    fontSize: 14,
-    marginVertical: 5,
-  },
-  gamePrice: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+    marginVertical: 15,
   },
-  bottomNav: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 15,
+  gameItem: {
     backgroundColor: "#111",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+  },
+  image: {
+    width: "100%",
+    height: 180,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 5,
+  },
+  description: {
+    fontSize: 14,
+    color: "#aaa",
+    marginBottom: 10,
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#0f0",
+    marginBottom: 10,
+  },
+  details: {
+    color: "#00aaff",
+    fontWeight: "bold",
+    fontSize: 14,
   },
 });
 
-export default EpicGamesStore;
+export default GameLibrary;
