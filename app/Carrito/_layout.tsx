@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome";  // Importación de Icon
-import legoFortnite from "../../assets/lego_fortnite.jpg";
-import princeOfPersia from "../../assets/prince_of_persia.jpg";
 
 const CartScreen = () => {
   const router = useRouter();
   const [cartItems, setCartItems] = useState([
-    { id: 1, title: "LEGO FORTNITE", description: "Fantasy, Violence 10+", image: legoFortnite },
-    { id: 2, title: "Prince of Persia: The Lost Crown", description: "Action, Adventure 12+", image: princeOfPersia },
+    { id: 1, title: "LEGO FORTNITE", description: "Fantasy, Violence 10+", image: require("../../assets/lego_fortnite.jpg") },
+    { id: 2, title: "Prince of Persia: The Lost Crown", description: "Action, Adventure 12+", image: require("../../assets/prince_of_persia.jpg") },
   ]);
 
   const removeItem = (id) => {
@@ -147,14 +145,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   bottomNav: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      backgroundColor: "#000",
-      paddingVertical: 10,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      right: 0,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#000",
+    paddingVertical: 10,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
 

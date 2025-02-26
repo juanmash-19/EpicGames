@@ -1,40 +1,57 @@
-export const tokens = {
-    colors: {
-      background: "#000",
-      primary: "#007bff",
-      secondary: "#111",
-      border: "#444",
-      textPrimary: "#fff",
-      textSecondary: "#aaa",
-      error: "red",
-    },
-    spacing: {
-      small: 10,
-      medium: 15,
-      large: 20,
-    },
-    borderRadius: {
-      small: 8,
-      medium: 10,
-    },
-    fontSize: {
-      small: 14,
-      medium: 16,
-      large: 22,
-    },
-    logoSize: {
-      width: 100,
-      height: 100,
-    },
-    buttonSize: {
-      width: 300,
-      padding: 10,
-    },
-    socialIconSize: {
-      width: 60,
-      height: 60,
-      googleWidth: 150,
-      googleHeight: 150,
-    },
-  };
+
+export const colors = {
+  primary: "#007bff", 
+  background: "#000",  
+  textPrimary: "#fff",
+  textSecondary: "#aaa",
+  border: "#444",      
+  inputBackground: "#111",
+  error: "red",
+};
+
+export const spacing = {
+  small: 10,
+  medium: 15,
+  large: 20,
+};
+
+export const borderRadius = {
+  small: 8,
+  medium: 10,
+};
+
+export const textStyles = {
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: colors.textPrimary,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: colors.textPrimary,
+  },
+  errorText: {
+    fontSize: 14,
+    color: colors.error,
+  },
+};
+
+export const containerStyles = {
+  fullScreen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.background,
+    width: "100%",
+  },
+  button: {
+    backgroundColor: colors.primary,
+    padding: spacing.small,
+    borderRadius: borderRadius.small,
+    alignItems: "center",
+    width: 300,
+    marginBottom: spacing.medium,
+  },
   
+};

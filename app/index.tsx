@@ -24,6 +24,20 @@ const Index = () => {
             <Text className="text-gray-400">Explora vastos mundos abiertos donde la magia de LEGO...</Text>
             <Text className="text-white font-bold">Gratis</Text>
           </View>
+
+          <View className="bg-gray-900 p-4 rounded-lg">
+            <Image source={require("../assets/juego3.png")} className="w-full h-40 rounded-lg" />
+            <Text className="text-white text-xl mt-2">Honkai: Star Rail es el nuevo RPG de fantasía espacial de HoYovers</Text>
+            <Text className="text-gray-400">Sube al Expreso Astral y descubre las maravillas infinitas de la galaxia en este viaje lleno de emoción y aventuras.</Text>
+            <Text className="text-white font-bold">COP 99,900</Text>
+          </View>
+
+          <View className="bg-gray-900 p-4 rounded-lg">
+            <Image source={require("../assets/juego4.png")} className="w-full h-40 rounded-lg" />
+            <Text className="text-white text-xl mt-2">Infinity Nikki, the fifth installment in the beloved Nikki series by Infold Game</Text>
+            <Text className="text-gray-400">cozy open-world game. Utilizing the UE5 engine, this multi-platform game features platforming, puzzle-solving</Text>
+            <Text className="text-white font-bold">COP 300,000</Text>
+          </View>
         </View>
       </ScrollView>
 
