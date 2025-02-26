@@ -84,6 +84,7 @@ const HomeLayout = () => {
         <Drawer.Screen name="gameStore" options={{ drawerLabel: "Tienda de Juegos", title: "Tienda" }} />
         <Drawer.Screen name="notices" options={{ drawerLabel: "Noticias", title: "Noticias" }} />
         <Drawer.Screen name="wishlist" options={{ drawerLabel: "Lista de Deseos", title: "Lista de Deseos" }} />
+        <Drawer.Screen name="Carrito" options={{ drawerLabel: "Carrito", title: "Carrito" }} />
       </Drawer>
     </PaperProvider>
   );
