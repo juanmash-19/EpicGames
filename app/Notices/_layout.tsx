@@ -27,6 +27,39 @@ const NewsComponent = () => {
           <Text style={styles.readMore}>Leer Más</Text>
         </TouchableOpacity>
       </View>
+
+      <View style={styles.newsItem}>
+        <Image source={require("../../assets/noticia3.png")} style={styles.image} />
+        <Text style={styles.title}>Fab, Epic’s New Unified Content Marketplace, Launches Today!</Text>
+        <Text style={styles.description}>
+        Fab es un destino único donde puedes descubrir, comprar, vender y compartir activos digitales, ¡y ya está disponible!
+        </Text>
+        <TouchableOpacity>
+          <Text style={styles.readMore}>Leer Más</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.newsItem}>
+        <Image source={require("../../assets/noticia4.png")} style={styles.image} />
+        <Text style={styles.title}>Ponte al día con las grandes novedades del Unreal Fest Seattle 2024</Text>
+        <Text style={styles.description}>
+        Acaba de finalizar la presentación de Unreal Fest Seattle, donde celebramos nuestro ecosistema de desarrolladores y creadores y las increíbles cosas que están creando con Unreal Engine y Unreal Editor for Fortnite (UEFN)
+        </Text>
+        <TouchableOpacity>
+          <Text style={styles.readMore}>Leer Más</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.newsItem}>
+        <Image source={require("../../assets/noticia5.png")} style={styles.image} />
+        <Text style={styles.title}>Disney y Epic Games crearán un universo de juegos y entretenimiento expansivo y abierto conectado a Fortnite</Text>
+        <Text style={styles.description}>
+        Hoy Epic Games y Walt Disney Company anuncian que colaborarán en un nuevo universo abierto, persistente y social que dará vida a las historias y experiencias de Disney, interoperando con Fortnite y sus más de 100 millones de jugadores y creadores activos.
+        </Text>
+        <TouchableOpacity>
+          <Text style={styles.readMore}>Leer Más</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
