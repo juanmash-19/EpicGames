@@ -12,7 +12,7 @@ const GameLibrary = () => {
         <Text style={styles.header}>Compra de Juegos</Text>
 
         <View style={styles.gameItem}>
-          <Image source={require("../../assets/Fornite.jpg")} style={styles.image} />
+          <Image source={require("../../../assets/Fornite.jpg")} style={styles.image} />
           <Text style={styles.title}>The Witcher 3: Wild Hunt</Text>
           <Text style={styles.description}>
             Vive una aventura épica en un mundo abierto lleno de criaturas y magia.
@@ -24,7 +24,7 @@ const GameLibrary = () => {
         </View>
 
         <View style={styles.gameItem}>
-          <Image source={require("../../assets/lego_fortnite.png")} style={styles.image} />
+          <Image source={require("../../../assets/lego_fortnite.png")} style={styles.image} />
           <Text style={styles.title}>Red Dead Redemption 2</Text>
           <Text style={styles.description}>
             Explora el salvaje oeste con una historia impactante y un mundo vivo.
@@ -36,7 +36,7 @@ const GameLibrary = () => {
         </View>
 
         <View style={styles.gameItem}>
-          <Image source={require("../../assets/prince_of_persia.png")} style={styles.image} />
+          <Image source={require("../../../assets/prince_of_persia.png")} style={styles.image} />
           <Text style={styles.title}>Cyberpunk 2077</Text>
           <Text style={styles.description}>
             Sumérgete en Night City con acción, tecnología y decisiones impactantes.

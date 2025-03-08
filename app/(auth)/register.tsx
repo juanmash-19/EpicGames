@@ -7,7 +7,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { colors, spacing, borderRadius, textStyles, containerStyles } from "../components/Token";
+import { colors, spacing, borderRadius, textStyles, containerStyles } from "../../utils/Token";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
