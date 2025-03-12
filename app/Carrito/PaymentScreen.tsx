@@ -4,18 +4,12 @@ import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import visaIcon from "../../assets/visa.jpg";
 import mastercardIcon from "../../assets/mastercard.png";
-import { useNavigation } from "@react-navigation/native";
 
 const PaymentScreen = () => {
   const router = useRouter();
-  const navigation = useNavigation();
   const { control, handleSubmit, formState: { errors } } = useForm();
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
-
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log("Datos de pago:", data);
     router.push("/success"); 
   };
@@ -29,9 +23,14 @@ const PaymentScreen = () => {
         <Image source={mastercardIcon} style={styles.icon} />
       </View>
 
+      {/* Número de Tarjeta */}
       <Controller
         control={control}
-        rules={{ required: "Número de tarjeta requerido", minLength: 16, maxLength: 16 }}
+        rules={{ 
+          required: "Número de tarjeta requerido", 
+          minLength: { value: 16, message: "Debe tener 16 dígitos" },
+          maxLength: { value: 16, message: "Debe tener 16 dígitos" }
+        }}
         render={({ field: { onChange, value } }) => (
           <TextInput
             style={[styles.input, errors.cardNumber && styles.inputError]}
@@ -46,10 +45,14 @@ const PaymentScreen = () => {
       />
       {errors.cardNumber && <Text style={styles.errorText}>{errors.cardNumber.message}</Text>}
 
+      {/* Expiración y CVV */}
       <View style={styles.row}>
         <Controller
           control={control}
-          rules={{ required: "Caducidad requerida" }}
+          rules={{ 
+            required: "Fecha de expiración requerida", 
+            pattern: { value: /^(0[1-9]|1[0-2])\/\d{2}$/, message: "Formato MM/YY" }
+          }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={[styles.inputSmall, errors.expiry && styles.inputError]}
@@ -62,9 +65,14 @@ const PaymentScreen = () => {
           )}
           name="expiry"
         />
+
         <Controller
           control={control}
-          rules={{ required: "CVV requerido", minLength: 3, maxLength: 4 }}
+          rules={{ 
+            required: "CVV requerido", 
+            minLength: { value: 3, message: "Mínimo 3 dígitos" }, 
+            maxLength: { value: 4, message: "Máximo 4 dígitos" }
+          }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={[styles.inputSmall, errors.cvv && styles.inputError]}
@@ -79,9 +87,10 @@ const PaymentScreen = () => {
           name="cvv"
         />
       </View>
-      {errors.expiry && <Text style={styles.errorText}>{errors.expiry.message}</Text>}
-      {errors.cvv && <Text style={styles.errorText}>{errors.cvv.message}</Text>}
+      {errors.expiry?.message && <Text style={styles.errorText}>{errors.expiry.message}</Text>}
+      {errors.cvv?.message && <Text style={styles.errorText}>{errors.cvv.message}</Text>}
 
+      {/* Guardar Método de Pago */}
       <Text style={styles.label}>¿Quieres guardar este método de pago?</Text>
       <View style={styles.radioGroup}>
         <TouchableOpacity style={styles.radioButton}>
@@ -92,10 +101,12 @@ const PaymentScreen = () => {
         </TouchableOpacity>
       </View>
 
+      {/* Botón de Pago */}
       <TouchableOpacity style={styles.payButton} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.payButtonText}>Realizar Compra</Text>
       </TouchableOpacity>
 
+      {/* Botón de Cancelar */}
       <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
         <Text style={styles.cancelButtonText}>Cancelar</Text>
       </TouchableOpacity>
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     marginBottom: 15,
     color: "#fff",
@@ -122,28 +133,33 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   icon: {
-    width: 50,
-    height: 30,
-    marginHorizontal: 5,
+    width: 60,
+    height: 40,
+    marginHorizontal: 10,
   },
   input: {
     width: "100%",
-    padding: 10,
+    padding: 12,
     borderWidth: 1,
     borderColor: "#aaa",
     borderRadius: 5,
     marginBottom: 10,
+    backgroundColor: "#fff",
+    color: "#000",
   },
   inputSmall: {
     width: "48%",
-    padding: 10,
+    padding: 12,
     borderWidth: 1,
     borderColor: "#aaa",
     borderRadius: 5,
     marginBottom: 10,
+    backgroundColor: "#fff",
+    color: "#000",
   },
   inputError: {
     borderColor: "red",
+    backgroundColor: "#ffebee",
   },
   row: {
     flexDirection: "row",
@@ -169,11 +185,12 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   payButton: {
-    backgroundColor: "blue",
+    backgroundColor: "#007bff",
     padding: 15,
     borderRadius: 5,
     width: "100%",
     alignItems: "center",
+    marginTop: 10,
   },
   payButtonText: {
     color: "#fff",
@@ -195,7 +212,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    fontSize: 12,
+    fontSize: 14,
     alignSelf: "flex-start",
   },
 });
