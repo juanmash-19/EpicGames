@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import Icon from "react-native-vector-icons/FontAwesome";  
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const CartScreen = () => {
   const router = useRouter();
@@ -11,28 +11,34 @@ const CartScreen = () => {
   ]);
 
   const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    setCartItems((prevItems) => prevItems.filter(item => item.id !== id));
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Mi carrito de compras</Text>
 
-      {cartItems.map(item => (
-        <View key={item.id} style={styles.itemContainer}>
-          <Image source={item.image} style={styles.image} />
-          <View style={styles.itemDetails}>
-            <Text style={styles.itemTitle}>{item.title}</Text>
-            <Text style={styles.itemDescription}>{item.description}</Text>
-            <TouchableOpacity style={styles.removeButton} onPress={() => removeItem(item.id)}>
-              <Text style={styles.removeText}>Eliminar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/wishlist") }>
-              <Text style={styles.wishlistText}>Lista de Deseos</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ))}
+      <ScrollView style={styles.scrollContainer}>
+        {cartItems.length > 0 ? (
+          cartItems.map(item => (
+            <View key={item.id} style={styles.itemContainer}>
+              <Image source={item.image} style={styles.image} />
+              <View style={styles.itemDetails}>
+                <Text style={styles.itemTitle}>{item.title}</Text>
+                <Text style={styles.itemDescription}>{item.description}</Text>
+                <TouchableOpacity style={styles.removeButton} onPress={() => removeItem(item.id)}>
+                  <Text style={styles.removeText}>Eliminar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.wishlistButton} onPress={() => router.push("/wishlist")}>
+                  <Text style={styles.wishlistText}>Lista de Deseos</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))
+        ) : (
+          <Text style={styles.emptyCart}>Tu carrito está vacío</Text>
+        )}
+      </ScrollView>
 
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryTitle}>Resumen de compra</Text>
@@ -45,10 +51,18 @@ const CartScreen = () => {
       </TouchableOpacity>
 
       <View style={styles.bottomNav}>
-        <Icon name="home" size={25} color="#fff" />
-        <Icon name="shopping-cart" size={25} color="#fff" />
-        <Icon name="heart" size={25} color="#fff" />
-        <Icon name="gift" size={25} color="#fff" />
+        <TouchableOpacity onPress={() => router.push("/home")}>
+          <Icon name="home" size={25} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/cart")}>
+          <Icon name="shopping-cart" size={25} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/wishlist")}>
+          <Icon name="heart" size={25} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/gifts")}>
+          <Icon name="gift" size={25} color="#fff" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -68,12 +82,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
+  scrollContainer: {
+    flexGrow: 1,
+  },
   itemContainer: {
     flexDirection: "row",
     backgroundColor: "#111",
     padding: 15,
     borderRadius: 10,
     marginBottom: 20,
+    alignItems: "center",
   },
   image: {
     width: 100,
@@ -96,23 +114,24 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     backgroundColor: "red",
-    padding: 5,
+    padding: 8,
     borderRadius: 5,
-    width: 80,
+    width: "60%",
     alignItems: "center",
+    marginBottom: 5,
   },
   removeText: {
     color: "#fff",
     fontSize: 14,
+    fontWeight: "bold",
   },
   wishlistButton: {
     borderWidth: 1,
     borderColor: "#fff",
-    padding: 5,
+    padding: 8,
     borderRadius: 5,
-    width: 120,
+    width: "80%",
     alignItems: "center",
-    marginTop: 5,
   },
   wishlistText: {
     color: "#fff",
@@ -123,6 +142,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginBottom: 20,
+    marginTop: 10,
   },
   summaryTitle: {
     fontSize: 18,
@@ -154,6 +174,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  emptyCart: {
+    textAlign: "center",
+    color: "#aaa",
+    fontSize: 18,
+    marginTop: 20,
   },
 });
 
