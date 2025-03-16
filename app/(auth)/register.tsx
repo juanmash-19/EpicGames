@@ -7,7 +7,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { colors, spacing, borderRadius, textStyles, containerStyles } from "../../utils/Token";
+import { register } from "../../libs/auth/ServiceRegister/api-services";
+import { storeToken } from "../../libs/auth/StoreToken";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -65,41 +66,24 @@ const RegisterPage: React.FC = () => {
 
   // Guardar usuario en AsyncStorage y permitir login
   const handleSubmit = async () => {
+    console.log ("entrando");
     if (!validateForm()) return;
-
-    try {
-      const storedUsers = await AsyncStorage.getItem("users");
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-
-      // Verificar si users es un array válido
-      if (!Array.isArray(users)) {
-        console.error("Error: users no es un array válido", users);
-        Alert.alert("Error", "Hubo un problema al guardar el usuario.");
-        return;
-      }
-
-      // Verificar si el usuario ya está registrado
-      const userExists = users.find((user) => user.email === email);
-
-      if (userExists) {
-        Alert.alert("Error", "Este correo ya está registrado.");
-        return;
-      }
-
-      // Agregar nuevo usuario a la lista
-      const newUser = { email, firstName, lastName, username, password, country, subscribe };
-      users.push(newUser);
-
-      await AsyncStorage.setItem("users", JSON.stringify(users));
-
-      console.log("✅ Usuario registrado:", newUser);
-      Alert.alert("Registro exitoso", "Tu cuenta ha sido creada correctamente.");
-      
-      // Redirigir a la pantalla de Login (ajústalo según tu navegación)
-      router.push("/login");
-    } catch (error) {
-      console.error("Error al guardar usuario:", error);
+    console.log("No errores");
+    const userdata = {
+      username,
+      firstName,
+      lastName,
+      country,
+      email,
+      password
     }
+
+    register(userdata)
+    .then((response)=> response.json())
+    .then ((data)=> {
+      storeToken(data.token)
+    })
+    .catch((e)=>{console.log(e)})
   };
 
   return (

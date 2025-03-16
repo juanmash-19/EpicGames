@@ -1,25 +1,18 @@
-
-// import { RegisterDTO, RegisterDAO } from "@/Interfaces/auth/RegisterInterface"
-
-// export const registerUser = async (body: RegisterDTO): Promise<RegisterDAO> => {
-//     try{
-//         const response = await fetch(`http://localhost:4000/api/users/register`,{
-//             method: 'POST',
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify(body),
-//         });
-
-//         if(!response.ok) {
-//             const errorData = await response.json();
-//             console.error("Este es el error:", errorData);
-//             throw new Error(errorData.message || "Error de registro");
-//         }
-
-//         return await response.json() as RegisterDAO;
-//     }catch(error){
-//         console.error("Error en el registro:", error);
-//         throw new Error("No se pudo completar el registro. Por favor, inténtalo de nuevo.");
-//     }
-// }
+export const register = (user: { username: any; firstName: any; lastName: any; country: any; email: any; password: any }) => {
+  console.log(user)
+  const bodydata = JSON.stringify({
+    username: user.username,
+    name: user.firstName,
+    lastname: user.lastName,
+    country: user.country,
+    email: user.email,
+    password: user.password
+  })
+  return fetch ('http://192.168.1.6:4000/api/v1/auth/register', {
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: bodydata
+  })
+}
