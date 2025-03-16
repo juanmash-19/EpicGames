@@ -6,8 +6,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { colors, spacing, borderRadius, textStyles, containerStyles } from "../../utils/Token";
-
+import { login } from "../../libs/auth/ServiceLogin/api-services";
+import { storeToken } from "../../libs/auth/StoreToken";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -49,35 +49,18 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     if (!validateForm()) return;
-
-    try {
-      const storedUsers = await AsyncStorage.getItem("users");
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-
-      // Verificar si users es un array válido
-      if (!Array.isArray(users)) {
-        console.error("Error: users no es un array válido", users);
-        Alert.alert("Error", "Hubo un problema al cargar los usuarios.");
-        return;
-      }
-
-      // Buscar si el usuario existe
-      const userExists = users.find((user) => user.email === email && user.password === password);
-
-      if (!userExists) {
-        Alert.alert("Error", "El usuario no está registrado o las credenciales son incorrectas.");
-        return;
-      }
-
-      // Si el usuario existe, guardar sus credenciales y permitir el acceso
-      await AsyncStorage.setItem("userEmail", email);
-      await AsyncStorage.setItem("userPassword", password);
-      console.log("✅ Inicio de sesión exitoso:", { email });
-
-      router.push("/Home");
-    } catch (error) {
-      console.error("Error al validar el inicio de sesión", error);
-    }
+    console.log("No errores");
+        const userdata = {
+          email,
+          password
+        }
+    
+        login(userdata)
+        .then((response)=> response.json())
+        .then((data)=> {
+          storeToken(data.token)
+        })
+        .catch(()=> console.log ("Fallo"))
   };
 
   return (
