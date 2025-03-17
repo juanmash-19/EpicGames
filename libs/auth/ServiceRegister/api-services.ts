@@ -8,11 +8,12 @@ export const register = (user: { username: any; firstName: any; lastName: any; c
     email: user.email,
     password: user.password
   })
-  return fetch ('http://192.168.1.6:4000/api/v1/auth/register', {
+  return fetch ('http://192.168.26.66:4000/api/v1/auth/register', {
     method: "POST", 
     headers: {
       "Content-Type": "application/json"
     },
     body: bodydata
   })
+  .then((response)=> response.json())
 }

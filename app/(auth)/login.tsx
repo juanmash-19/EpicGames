@@ -56,7 +56,6 @@ const LoginPage: React.FC = () => {
         }
     
         login(userdata)
-        .then((response)=> response.json())
         .then((data)=> {
           storeToken(data.token)
         })

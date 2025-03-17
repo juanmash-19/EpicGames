@@ -79,7 +79,6 @@ const RegisterPage: React.FC = () => {
     }
 
     register(userdata)
-    .then((response)=> response.json())
     .then ((data)=> {
       storeToken(data.token)
     })
