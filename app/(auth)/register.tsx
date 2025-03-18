@@ -66,23 +66,24 @@ const RegisterPage: React.FC = () => {
 
   // Guardar usuario en AsyncStorage y permitir login
   const handleSubmit = async () => {
-    console.log ("entrando");
     if (!validateForm()) return;
-    console.log("No errores");
-    const userdata = {
-      username,
-      firstName,
-      lastName,
-      country,
-      email,
-      password
-    }
 
-    register(userdata)
-    .then ((data)=> {
-      storeToken(data.token)
-    })
-    .catch((e)=>{console.log(e)})
+    const userdata = { username, firstName, lastName, country, email, password };
+
+    try {
+      const data = await register(userdata);  // Ya devuelve JSON corregido
+
+      if (data.token) {
+        await storeToken(data.token);
+        Alert.alert("Excelente", "Tu registro fue exitoso.");
+        router.push("/login"); 
+      } else {
+        Alert.alert("Error", data.message || "No se pudo registrar.");
+      }
+    } catch (error) {
+      console.error("Error en el registro:", error);
+      Alert.alert("Error", "Hubo un problema con el registro.");
+    }
   };
 
   return (

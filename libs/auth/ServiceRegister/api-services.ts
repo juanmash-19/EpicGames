@@ -1,19 +1,36 @@
-export const register = (user: { username: any; firstName: any; lastName: any; country: any; email: any; password: any }) => {
-  console.log(user)
-  const bodydata = JSON.stringify({
-    username: user.username,
-    name: user.firstName,
-    lastname: user.lastName,
-    country: user.country,
-    email: user.email,
-    password: user.password
-  })
-  return fetch ('http://192.168.26.66:4000/api/v1/auth/register', {
-    method: "POST", 
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: bodydata
-  })
-  .then((response)=> response.json())
-}
+export const register = async (user: { username: string; firstName: string; lastName: string; country: string; email: string; password: string }) => {
+  try {
+    console.log("Enviando datos:", user);
+
+    const response = await fetch("http://192.168.1.6:4000/api/v1/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: user.username,
+        name: user.firstName,
+        lastname: user.lastName,
+        country: user.country,
+        email: user.email,
+        password: user.password,
+      }),
+    });
+
+    // Validar respuesta HTTP
+    if (!response.ok) {
+      const errorText = await response.text();  // Obtener texto en caso de error
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
+    // Intentar parsear JSON y manejar error si es HTML u otro formato
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      throw new Error("La respuesta del servidor no es JSON válido.");
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    throw error;
+  }
+};

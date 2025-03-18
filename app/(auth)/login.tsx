@@ -54,12 +54,20 @@ const LoginPage: React.FC = () => {
           email,
           password
         }
-    
-        login(userdata)
-        .then((data)=> {
-          storeToken(data.token)
-        })
-        .catch(()=> console.log ("Fallo"))
+      try {
+      const data = await login(userdata);
+      
+      if (data && data.token) {
+        await storeToken(data.token);
+        router.push("/Home"); 
+      } else {
+        setError("❌ Credenciales incorrectas.");
+      }
+    } catch (error) {
+      console.error("Error en el inicio de sesión:", error);
+      setError("❌ Ocurrió un error, intenta de nuevo.");
+    }
+        
   };
 
   return (
