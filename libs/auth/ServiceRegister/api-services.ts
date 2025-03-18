@@ -17,13 +17,11 @@ export const register = async (user: { username: string; firstName: string; last
       }),
     });
 
-    // Validar respuesta HTTP
     if (!response.ok) {
-      const errorText = await response.text();  // Obtener texto en caso de error
+      const errorText = await response.text(); 
       throw new Error(`Error ${response.status}: ${errorText}`);
     }
 
-    // Intentar parsear JSON y manejar error si es HTML u otro formato
     try {
       return await response.json();
     } catch (jsonError) {
