@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, ScrollView, Image } from "react-native";
 import GameList from "../components/organisms/GameList";
 

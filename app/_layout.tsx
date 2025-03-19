@@ -7,6 +7,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import { removeToken, getToken } from '../libs/auth/StoreToken'
+
 
 
 import "../global.css";
@@ -15,6 +17,16 @@ const HomeLayout = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const router = useRouter();
+  const [times, setTimes] = useState(0)
+  
+  const [isLogged, setIsLogged] = useState(false)
+
+  useEffect(() => {
+    if (times == 0){
+      removeToken()
+      setTimes(times + 1)
+    }
+  })
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -25,6 +37,14 @@ const HomeLayout = () => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const verifySession = async () => {
+      const token = await getToken()
+      setIsLogged(token != null)
+    }
+    verifySession()
+  }, [getToken()])
 
   // Resetear el estado del menú al cambiar de pantalla
   useFocusEffect(
@@ -58,21 +78,35 @@ const HomeLayout = () => {
                   </TouchableOpacity>
                 }
               >
-                <Menu.Item
-                  onPress={() => {
-                    setMenuVisible(false);
-                    router.push("/login");
-                  }}
-                  title="Iniciar Sesión"
-                />
-                <Divider />
-                <Menu.Item
-                  onPress={() => {
-                    setMenuVisible(false);
-                    router.push("/register");
-                  }}
-                  title="Registrarse"
-                />
+                {!isLogged ? (
+                  <>
+                    <Menu.Item
+                      onPress={() => {
+                        setMenuVisible(false);
+                        router.push("/login");
+                      }}
+                      title="Iniciar Sesión"
+                    />
+                    <Divider />
+                    <Menu.Item
+                      onPress={() => {
+                        setMenuVisible(false);
+                        router.push("/register");
+                      }}
+                      title="Registrarse"
+                    />
+                  </>
+                  ) : (
+                    <Menu.Item
+                      onPress={() => {
+                        setMenuVisible(false);
+                        removeToken();
+                        router.push("/");
+                      }}
+                      title="Cerrar sesion"
+                    />
+                  )
+                }
               </Menu>
             </View>
           ),

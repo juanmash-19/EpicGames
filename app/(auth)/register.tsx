@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { register } from "../../libs/auth/ServiceRegister/api-services";
-import { storeToken } from "../../libs/auth/StoreToken";
+import { getToken, storeToken } from "../../libs/auth/StoreToken";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -76,7 +76,8 @@ const RegisterPage: React.FC = () => {
       if (data.token) {
         await storeToken(data.token);
         Alert.alert("Excelente", "Tu registro fue exitoso.");
-        router.push("/login"); 
+        
+        router.push("/"); 
       } else {
         Alert.alert("Error", data.message || "No se pudo registrar.");
       }
