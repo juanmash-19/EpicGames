@@ -113,7 +113,7 @@ const HomeLayout = () => {
         }}
       >
         <Drawer.Screen name="Home" options={{ drawerLabel: "Home", title: "Home" }} />
-        <Drawer.Screen name="(auth)" options={{ drawerLabel: "Autenticación", title: "Autenticación" }} />
+        <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { height: 0 } }} />
         <Drawer.Screen name="Biblioteca" options={{ drawerLabel: "Biblioteca de Juegos", title: "Biblioteca" }} />
         <Drawer.Screen name="gameStore" options={{ drawerLabel: "Tienda de Juegos", title: "Tienda" }} />
         <Drawer.Screen name="notices"  options={{ drawerLabel: "Noticias", title: "Noticias" }} />
