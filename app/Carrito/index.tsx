@@ -18,7 +18,7 @@ const CartScreen = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Mi carrito de compras</Text>
 
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer} contentContainerStyle={{ paddingBottom: 20 }}>
         {cartItems.length > 0 ? (
           cartItems.map(item => (
             <View key={item.id} style={styles.itemContainer}>
@@ -38,17 +38,17 @@ const CartScreen = () => {
         ) : (
           <Text style={styles.emptyCart}>Tu carrito está vacío</Text>
         )}
+
+        <View style={styles.summaryContainer}>
+          <Text style={styles.summaryTitle}>Resumen de compra</Text>
+          <Text style={styles.summaryText}>Precio: COP</Text>
+          <Text style={styles.summaryText}>SubTotal: COP</Text>
+        </View>
+
+        <TouchableOpacity style={styles.checkoutButton} onPress={() => router.push("/Carrito/PaymentScreen")}>
+          <Text style={styles.checkoutText}>Finalizar Compra</Text>
+        </TouchableOpacity>
       </ScrollView>
-
-      <View style={styles.summaryContainer}>
-        <Text style={styles.summaryTitle}>Resumen de compra</Text>
-        <Text style={styles.summaryText}>Precio: COP</Text>
-        <Text style={styles.summaryText}>SubTotal: COP</Text>
-      </View>
-
-      <TouchableOpacity style={styles.checkoutButton} onPress={() => router.push("/Carrito/PaymentScreen")}>
-        <Text style={styles.checkoutText}>Finalizar Compra</Text>
-      </TouchableOpacity>
 
       <View style={styles.bottomNav}>
         <TouchableOpacity onPress={() => router.push("/home")}>
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   scrollContainer: {
-    flexGrow: 1,
+    flex: 1,
+    marginBottom: 60,
   },
   itemContainer: {
     flexDirection: "row",
@@ -141,8 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#111",
     padding: 15,
     borderRadius: 10,
-    marginBottom: 20,
-    marginTop: 10,
+    marginVertical: 10,
   },
   summaryTitle: {
     fontSize: 18,
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginBottom: 20,
   },
   checkoutText: {
     color: "#fff",
