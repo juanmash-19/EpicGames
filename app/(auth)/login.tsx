@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import { 
   View, Text, TextInput, TouchableOpacity, StyleSheet, 
   Image, Linking, Alert 
@@ -13,22 +13,24 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
-    loadCredentials();
+    checkAuthStatus();
   }, []);
 
-  // Cargar credenciales almacenadas
-  const loadCredentials = async () => {
+  // Verifica si el usuario ya está autenticado
+  const checkAuthStatus = async () => {
     try {
-      const storedEmail = await AsyncStorage.getItem("userEmail");
-      const storedPassword = await AsyncStorage.getItem("userPassword");
-      if (storedEmail) setEmail(storedEmail);
-      if (storedPassword) setPassword(storedPassword);
+      const token = await AsyncStorage.getItem("authToken");
+      if (token) {
+        setIsAuthenticated(true);
+        router.push("/Home"); // Si está autenticado, lo manda al Home
+      }
     } catch (error) {
-      console.error("Error al cargar las credenciales", error);
+      console.error("Error verificando autenticación", error);
     }
   };
 
@@ -49,16 +51,13 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     if (!validateForm()) return;
-    console.log("No errores");
-        const userdata = {
-          email,
-          password
-        }
-      try {
-      const data = await login(userdata);
-      
+    
+    try {
+      const data = await login({ email, password });
+
       if (data && data.token) {
         await storeToken(data.token);
+        setIsAuthenticated(true);
         router.push("/Home"); 
       } else {
         setError("❌ Credenciales incorrectas.");
@@ -67,14 +66,13 @@ const LoginPage: React.FC = () => {
       console.error("Error en el inicio de sesión:", error);
       setError("❌ Ocurrió un error, intenta de nuevo.");
     }
-        
   };
 
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       
-      <Text style={styles.title}>Inicia Sesión</Text>
+      <Text style={styles.title}>Inicia Sesión</Text>
 
       <TextInput
         style={styles.input}
