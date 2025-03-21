@@ -19,6 +19,7 @@ const RegisterPage: React.FC = () => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
   const [country, setCountry] = useState("");
+  const [role, setRole] = useState("usuario"); // Default role
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -30,6 +31,11 @@ const RegisterPage: React.FC = () => {
     { label: "Colombia", value: "colombia" },
     { label: "México", value: "mexico" },
     { label: "Argentina", value: "argentina" },
+  ];
+
+  const roles = [
+    { label: "Usuario", value: "usuario" },
+    { label: "Administrador", value: "administrador" },
   ];
 
   const loadStoredData = async () => {
@@ -68,7 +74,7 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    const userdata = { username, firstName, lastName, country, email, password };
+    const userdata = { username, firstName, lastName, country, email, password, role };
 
     try {
       const data = await register(userdata);  // Ya devuelve JSON corregido
@@ -146,6 +152,19 @@ const RegisterPage: React.FC = () => {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+      />
+
+      <Dropdown
+        style={styles.dropdown}
+        data={roles}
+        labelField="label"
+        valueField="value"
+        placeholder="Selecciona tu rol"
+        placeholderStyle={{ color: "#aaa" }}
+        selectedTextStyle={{ color: "#fff" }}
+        itemTextStyle={{ color: "#000" }}
+        value={role}
+        onChange={(item) => setRole(item.value)}
       />
 
       <View style={styles.switchContainer}>
