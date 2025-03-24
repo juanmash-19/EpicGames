@@ -7,7 +7,7 @@ export const login = async (user: { email: string; password: string }) => {
   });
 
   try {
-    const response = await fetch("http://172.20.10.4:4000/api/v1/auth/login", {
+    const response = await fetch("http://192.168.1.4:4000/api/v1/auth/login", {
       method: "POST", 
       headers: { "Content-Type": "application/json" },
       body: bodydata

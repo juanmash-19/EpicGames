@@ -2,7 +2,7 @@ export const register = async (user: { username: string; firstName: string; last
   try {
     console.log("Enviando datos:", user);
 
-    const response = await fetch("http://172.20.10.4:4000/api/v1/auth/register", {
+    const response = await fetch("http://192.168.1.4:4000/api/v1/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -14,8 +14,9 @@ export const register = async (user: { username: string; firstName: string; last
         country: user.country,
         email: user.email,
         password: user.password,
+        rol: user.rol,
       }),
-    });
+    })
 
     if (!response.ok) {
       const errorText = await response.text(); 

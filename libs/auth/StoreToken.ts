@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const TOKEN_KEY = "authToken"; // 🔹 Usa una clave consistente
+const TOKEN_KEY = "authToken"; //  Usa una clave consistente
 
 // Guardar token
 export const storeToken = async (token: string) => {
