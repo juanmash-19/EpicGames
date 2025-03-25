@@ -19,7 +19,7 @@ const UsersScreen = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://192.168.1.4:4000/api/v1/auth/users");
+        const response = await fetch("http://172.20.10.4:4000/api/v1/auth/users");
         if (!response.ok) {
           throw new Error("Error al obtener los usuarios");
         }
@@ -43,7 +43,7 @@ const UsersScreen = () => {
               <Text style={styles.userName}>{user.name} {user.lastname}</Text>
               <Text style={styles.userEmail}>Correo: {user.email}</Text>
               <Text style={styles.userCountry}>País: {user.country}</Text>
-              <Text style={styles.userRole}>Rol: {user.rol}</Text>
+              <Text style={styles.userRol}>Rol: {user.rol}</Text>
             </View>
           ))
         ) : (
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     color: "#bd93f9",
     marginBottom: 3,
   },
-  userRole: {
+  userRol: {
     fontSize: 16,
     color: "#ff79c6",
   },

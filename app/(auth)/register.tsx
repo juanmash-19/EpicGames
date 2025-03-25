@@ -66,7 +66,7 @@ const RegisterPage: React.FC = () => {
       Alert.alert("Error", "Debes aceptar los términos y condiciones.");
       return false;
     }
-    if (!rol) { // 🔹 Validación para que el usuario elija un rol
+    if (!rol) { // Validación para que el usuario elija un rol
       Alert.alert("Error", "Debes seleccionar un rol.");
       return false;
     }

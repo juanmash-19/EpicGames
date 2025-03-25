@@ -5,7 +5,6 @@ import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { jwtDecode } from "jwt-decode";
 
-// Definimos el tipo del token decodificado
 interface DecodedToken {
   user: {
     rol: string;
@@ -27,36 +26,35 @@ const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: strin
         if (!token) {
           console.warn("🚫 No hay token, redirigiendo al Login...");
           setIsAuthenticated(false);
-          setTimeout(() => router.replace("/login"), 1000);
-          return;
+          return setTimeout(() => router.replace("/login"), 1000);
         }
 
         console.log("🔍 Token recuperado:", token);
 
-        // 🛑 Validar formato del token antes de decodificarlo
         if (!token.includes(".")) {
           console.error("❌ Formato de token inválido.");
           setIsAuthenticated(false);
-          setTimeout(() => router.replace("/login"), 1000);
-          return;
+          return setTimeout(() => router.replace("/login"), 1000);
         }
 
-        // ✅ Decodificar el token
+        // Decodifica el token
         const payload: DecodedToken = jwtDecode(token);
         console.log("✅ Token decodificado:", payload);
 
-        // 📌 Verificar expiración del token
+        // Verifica expiración del token
         const currentTime = Math.floor(Date.now() / 1000);
         if (payload.exp < currentTime) {
           console.warn("⏳ Token expirado. Eliminando y redirigiendo...");
           await AsyncStorage.removeItem("authToken");
           setIsAuthenticated(false);
-          setTimeout(() => router.replace("/login"), 1000);
-          return;
+          return setTimeout(() => router.replace("/login"), 1000);
         }
 
-        // ✅ Usuario autenticado
-        const rolUsuario = payload.user.rol?.trim().toLowerCase(); // 🔄 Normalización
+        // Normaliza el rol
+        let rolUsuario = payload.user.rol?.trim().toLowerCase();
+        if (rolUsuario === "administrador") {
+          rolUsuario = "admin"; // 🔥 Convertimos "administrador" a "admin"
+        }
         console.log("✅ Usuario autenticado con rol:", rolUsuario);
 
         setIsAuthenticated(true);
@@ -69,7 +67,6 @@ const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: strin
       }
     };
 
-    // 🔄 Se ejecuta cada vez que la pantalla se muestra de nuevo
     useFocusEffect(
       useCallback(() => {
         setLoading(true);
@@ -94,9 +91,12 @@ const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: strin
       );
     }
 
-    // 📌 Verificar permisos de acceso según el rol (corregido)
+    // Verifica permisos de acceso según el rol 
     if (requiredRol) {
-      const rolRequerido = requiredRol.trim().toLowerCase(); // 🔄 Normalización
+      let rolRequerido = requiredRol.trim().toLowerCase();
+      if (rolRequerido === "administrador") {
+        rolRequerido = "admin"; // 🔥 Convertimos "administrador" a "admin" para la comparación
+      }
 
       console.log(`📌 Comparando roles -> Requerido: '${rolRequerido}', Usuario: '${userRol}'`);
 
