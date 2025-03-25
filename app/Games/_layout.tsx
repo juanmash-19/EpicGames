@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons"; // Importar íconos de FontAwesome
+import { FontAwesome5 } from "@expo/vector-icons"; 
+import withAuth from "../../libs/auth/withAuth"; 
 
 const AddGameScreen = () => {
   const [descripcion, setDescripcion] = useState("");
@@ -9,7 +10,6 @@ const AddGameScreen = () => {
 
   const handleGuardar = () => {
     console.log("Juego guardado:", { descripcion, precio, imagen });
-    // Lógica para guardar el videojuego
   };
 
   const handleCancelar = () => {
@@ -67,43 +67,43 @@ const AddGameScreen = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#000", // Fondo completamente negro
+    backgroundColor: "#000", 
   },
   container: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.85)", // Fondo semitransparente más oscuro
+    backgroundColor: "rgba(0, 0, 0, 0.85)", 
     padding: 20,
-    borderRadius: 15, // Bordes más redondeados
+    borderRadius: 15, 
     margin: 20,
-    shadowColor: "#fff", // Sombra blanca
+    shadowColor: "#fff", 
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
-    elevation: 10, // Sombra en Android
+    elevation: 10, 
   },
   header: {
-    fontSize: 30, // Tamaño de fuente más grande
+    fontSize: 30, 
     fontWeight: "bold",
-    color: "#fff", // Título en blanco
+    color: "#fff", 
     marginBottom: 20,
     textAlign: "center",
     textShadowColor: "#000",
     textShadowOffset: { width: 3, height: 3 },
-    textShadowRadius: 8, // Sombra más pronunciada
+    textShadowRadius: 8, 
   },
   input: {
     backgroundColor: "#333",
     color: "#fff",
     padding: 15,
-    borderRadius: 12, // Bordes más redondeados
+    borderRadius: 12, 
     marginBottom: 15,
-    borderWidth: 1.5, // Bordes más gruesos
-    borderColor: "#fff", // Bordes blancos
+    borderWidth: 1.5, 
+    borderColor: "#fff", 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 5, // Sombra en Android
+    elevation: 5, 
   },
   buttonContainer: {
     flexDirection: "row",
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: "#28a745",
     padding: 15,
-    borderRadius: 12, // Bordes más redondeados
+    borderRadius: 12, 
     flex: 1,
     marginRight: 10,
     alignItems: "center",
@@ -121,13 +121,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.4,
     shadowRadius: 6,
-    elevation: 6, // Sombra en Android
+    elevation: 6, 
     transform: [{ scale: 1 }],
   },
   cancelButton: {
     backgroundColor: "#dc3545",
     padding: 15,
-    borderRadius: 12, // Bordes más redondeados
+    borderRadius: 12, 
     flex: 1,
     marginLeft: 10,
     alignItems: "center",
@@ -135,18 +135,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.4,
     shadowRadius: 6,
-    elevation: 6, // Sombra en Android
+    elevation: 6, 
     transform: [{ scale: 1 }],
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 18, // Texto más grande
-    textTransform: "uppercase", // Texto en mayúsculas
+    fontSize: 18, 
+    textTransform: "uppercase", 
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Superposición más oscura
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
   headerContainer: {
     flexDirection: "row",
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   icon: {
-    marginRight: 10, // Espacio entre el ícono y el texto
+    marginRight: 10, 
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.5,
@@ -163,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddGameScreen;
+export default withAuth(AddGameScreen, "admin");

@@ -34,7 +34,7 @@ const Index = () => {
         },
       })}
     >
-      <Tabs.Screen name="Home" options={{ title: "Inicio" }} />
+      <Tabs.Screen name="Home" options={{ title: "Home" }} />
       <Tabs.Screen name="GameStore" options={{ title: "Tienda" }} />
       <Tabs.Screen name="WishList" options={{ title: "Lista de Deseos" }} />
       <Tabs.Screen name="GameLibrary" options={{ title: "Biblioteca" }} />

@@ -2,12 +2,13 @@ import React, { useState, useCallback } from "react";
 import { View, ActivityIndicator, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { useFocusEffect } from "@react-navigation/native"; // 👈 Detecta cuando la pantalla está activa
+import { useFocusEffect } from "@react-navigation/native";
 
-const withAuth = (WrappedComponent: React.ComponentType<any>) => {
+const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: string | null = null) => {
   return (props: any) => {
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userRol, setUserRol] = useState<string | null>(null);
     const router = useRouter();
 
     const checkAuth = async () => {
@@ -38,6 +39,7 @@ const withAuth = (WrappedComponent: React.ComponentType<any>) => {
 
         console.log("✅ Usuario autenticado.");
         setIsAuthenticated(true);
+        setUserRol(payload.user.rol); // 👈 Guardamos el rol del usuario
       } catch (error) {
         console.error("🚨 Error verificando autenticación:", error);
         setIsAuthenticated(false);
@@ -67,6 +69,17 @@ const withAuth = (WrappedComponent: React.ComponentType<any>) => {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
           <Text style={{ color: "#fff", fontSize: 18 }}>No tienes acceso. Redirigiendo...</Text>
+        </View>
+      );
+    }
+
+    // 📌 Verificar permisos de acceso según el rol
+    if (requiredRol && userRol !== requiredRol) {
+      console.log("🚫 Acceso denegado. Redirigiendo...");
+      setTimeout(() => router.replace("/Home"), 1000); 
+      return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
+          <Text style={{ color: "#fff", fontSize: 18 }}>No tienes permisos para acceder aquí.</Text>
         </View>
       );
     }
