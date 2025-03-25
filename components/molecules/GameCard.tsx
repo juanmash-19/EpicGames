@@ -10,7 +10,7 @@ interface GameCardProps {
 
 const GameCard: React.FC<GameCardProps> = ({ image, title, description, price }) => {
   return (
-    <View className="bg-gray-900 p-4 rounded-lg mb-4"> {/* Agregado mb-4 para margen inferior */}
+    <View className="bg-gray-900 p-4 rounded-lg mb-4"> 
       <Image source={image} className="w-full h-40 rounded-lg" />
       <Text className="text-white text-xl mt-2">{title}</Text>
       <Text className="text-gray-400">{description}</Text>
