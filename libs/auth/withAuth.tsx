@@ -12,7 +12,10 @@ interface DecodedToken {
   exp: number;
 }
 
-const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: string | null = null) => {
+const withAuth = (
+  WrappedComponent: React.ComponentType<any>,
+  requiredRol: string | null = null
+) => {
   return (props: any) => {
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -50,11 +53,14 @@ const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: strin
           return setTimeout(() => router.replace("/login"), 1000);
         }
 
-        // Normaliza el rol
+        // 🔹 Normaliza el rol del usuario
         let rolUsuario = payload.user.rol?.trim().toLowerCase();
         if (rolUsuario === "administrador") {
           rolUsuario = "admin"; // 🔥 Convertimos "administrador" a "admin"
+        } else if (rolUsuario === "usuario") {
+          rolUsuario = "user"; // 🔥 Convertimos "usuario" a "user"
         }
+
         console.log("✅ Usuario autenticado con rol:", rolUsuario);
 
         setIsAuthenticated(true);
@@ -76,36 +82,88 @@ const withAuth = (WrappedComponent: React.ComponentType<any>, requiredRol: strin
 
     if (loading) {
       return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#000",
+          }}
+        >
           <ActivityIndicator size="large" color="#007bff" />
-          <Text style={{ color: "#fff", fontSize: 18, marginTop: 10 }}>Verificando sesión...</Text>
+          <Text style={{ color: "#fff", fontSize: 18, marginTop: 10 }}>
+            Verificando sesión...
+          </Text>
         </View>
       );
     }
 
     if (!isAuthenticated) {
       return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
-          <Text style={{ color: "#fff", fontSize: 18 }}>No tienes acceso. Redirigiendo...</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#000",
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 18 }}>
+            No tienes acceso. Redirigiendo...
+          </Text>
         </View>
       );
     }
 
-    // Verifica permisos de acceso según el rol 
+    // 🚨 Restricción para que ADMIN no acceda al carrito
+    const rutaActual = props.route?.name || ""; // Obtiene la ruta actual
+    if (userRol === "admin" && rutaActual === "/carrito") {
+      console.warn("🚫 Administrador no tiene acceso al carrito.");
+      setTimeout(() => router.replace("/Home"), 1000);
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#000",
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 18 }}>
+            No tienes permisos para acceder aquí.
+          </Text>
+        </View>
+      );
+    }
+
+    // 🔹 Verifica permisos de acceso según el rol
     if (requiredRol) {
       let rolRequerido = requiredRol.trim().toLowerCase();
       if (rolRequerido === "administrador") {
-        rolRequerido = "admin"; // 🔥 Convertimos "administrador" a "admin" para la comparación
+        rolRequerido = "admin"; // 🔥 Convertimos "administrador" a "admin"
+      } else if (rolRequerido === "usuario") {
+        rolRequerido = "user"; // 🔥 Convertimos "usuario" a "user"
       }
 
-      console.log(`📌 Comparando roles -> Requerido: '${rolRequerido}', Usuario: '${userRol}'`);
+      console.log(
+        `📌 Comparando roles -> Requerido: '${rolRequerido}', Usuario: '${userRol}'`
+      );
 
       if (!userRol || userRol !== rolRequerido) {
         console.warn("🚫 Acceso denegado para rol:", userRol);
         setTimeout(() => router.replace("/Home"), 1000);
         return (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
-            <Text style={{ color: "#fff", fontSize: 18 }}>No tienes permisos para acceder aquí.</Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#000",
+            }}
+          >
+            <Text style={{ color: "#fff", fontSize: 18 }}>
+              No tienes permisos para acceder aquí.
+            </Text>
           </View>
         );
       }
