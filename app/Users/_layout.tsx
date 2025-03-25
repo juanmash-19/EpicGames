@@ -2,35 +2,19 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import withAuth from "../../libs/auth/withAuth"; 
+import { fetchUsers, User } from "../../libs/auth/ServiceUsers/ServiceUsers";
 
 const UsersScreen = () => {
-  interface User {
-    id: number;
-    name: string;
-    lastname: string;
-    email: string;
-    country: string;
-    rol: string;
-  }
-
   const [users, setUsers] = useState<User[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("http://172.20.10.4:4000/api/v1/auth/users");
-        if (!response.ok) {
-          throw new Error("Error al obtener los usuarios");
-        }
-        const data: User[] = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
-      }
+    const loadUsers = async () => {
+      const data = await fetchUsers();
+      setUsers(data);
     };
 
-    fetchUsers();
+    loadUsers();
   }, []);
 
   return (
