@@ -6,9 +6,9 @@ const Index = () => {
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#000" }, // Fondo negro
-        tabBarActiveTintColor: "#fff", // Ícono activo blanco
-        tabBarInactiveTintColor: "#888", // Ícono inactivo gris
+        tabBarStyle: { backgroundColor: "#000" }, 
+        tabBarActiveTintColor: "#fff", 
+        tabBarInactiveTintColor: "#888", 
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
 
@@ -34,7 +34,8 @@ const Index = () => {
         },
       })}
     >
-      <Tabs.Screen name="index" options={{ title: "Inicio" }} />
+
+      <Tabs.Screen name="Home" options={{ title: "Home" }} />
       <Tabs.Screen name="GameStore" options={{ title: "Tienda" }} />
       <Tabs.Screen name="WishList" options={{ title: "Lista de Deseos" }} />
       <Tabs.Screen name="GameLibrary" options={{ title: "Biblioteca" }} />

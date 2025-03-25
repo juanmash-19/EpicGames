@@ -19,7 +19,7 @@ const RegisterPage: React.FC = () => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
   const [country, setCountry] = useState("");
-  const [role, setRole] = useState("usuario"); // Default role
+  const [rol, setRol] = useState(""); 
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -47,7 +47,6 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  // Validar los datos ingresados antes de registrar al usuario
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -55,8 +54,8 @@ const RegisterPage: React.FC = () => {
       Alert.alert("Error", "Correo electrónico inválido.");
       return false;
     }
-    if (!firstName || !lastName || !username) {
-      Alert.alert("Error", "Todos los campos deben estar completos.");
+    if (!firstName || !lastName || !username || !rol) {
+      Alert.alert("Error", "Todos los campos deben estar completos, incluyendo el rol.");
       return false;
     }
     if (password.length < 6) {
@@ -67,17 +66,20 @@ const RegisterPage: React.FC = () => {
       Alert.alert("Error", "Debes aceptar los términos y condiciones.");
       return false;
     }
+    if (!rol) { // 🔹 Validación para que el usuario elija un rol
+      Alert.alert("Error", "Debes seleccionar un rol.");
+      return false;
+    }
     return true;
   };
 
-  // Guardar usuario en AsyncStorage y permitir login
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    const userdata = { username, firstName, lastName, country, email, password, role };
+    const userdata = { username, firstName, lastName, country, email, password, rol };
 
     try {
-      const data = await register(userdata);  // Ya devuelve JSON corregido
+      const data = await register(userdata);
 
       if (data.token) {
         await storeToken(data.token);
@@ -163,8 +165,8 @@ const RegisterPage: React.FC = () => {
         placeholderStyle={{ color: "#aaa" }}
         selectedTextStyle={{ color: "#fff" }}
         itemTextStyle={{ color: "#000" }}
-        value={role}
-        onChange={(item) => setRole(item.value)}
+        value={rol}
+        onChange={(item) => setRol(item.value)}
       />
 
       <View style={styles.switchContainer}>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import withAuth from "../../libs/auth/withAuth"; 
 
 const UsersScreen = () => {
   interface User {
@@ -18,7 +19,7 @@ const UsersScreen = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://172.20.10.4:4000/api/v1/auth/users");
+        const response = await fetch("http://192.168.1.4:4000/api/v1/auth/users");
         if (!response.ok) {
           throw new Error("Error al obtener los usuarios");
         }
@@ -56,7 +57,7 @@ const UsersScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000", // Fondo totalmente negro
+    backgroundColor: "#000", 
     paddingHorizontal: 15,
   },
   header: {
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
   },
   userCard: {
-    backgroundColor: "#121212", // Negro ligeramente más claro
+    backgroundColor: "#121212",
     padding: 20,
     borderRadius: 15,
     marginBottom: 15,
@@ -107,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UsersScreen;
+export default withAuth(UsersScreen, "admin");
