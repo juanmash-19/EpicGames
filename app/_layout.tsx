@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Drawer } from "expo-router/drawer";
+import { Alert } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Menu, Divider, PaperProvider } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -105,7 +106,8 @@ const HomeLayout = () => {
                       onPress={() => {
                         setMenuVisible(false);
                         removeToken();
-                        router.push("/");
+                        Alert.alert("Excelente", "Se cerro tu sesión.");
+                        router.push("/Home");
                       }}
                       title="Cerrar sesion"
                     />

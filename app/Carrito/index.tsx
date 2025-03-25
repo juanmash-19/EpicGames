@@ -82,21 +82,6 @@ const CartScreen = () => {
           <Text style={styles.checkoutText}>Finalizar Compra</Text>
         </TouchableOpacity>
       </ScrollView>
-
-      <View style={styles.bottomNav}>
-        <TouchableOpacity onPress={() => router.push("/home")}>
-          <Icon name="home" size={25} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push("/cart")}>
-          <Icon name="shopping-cart" size={25} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push("/wishlist")}>
-          <Icon name="heart" size={25} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push("/gifts")}>
-          <Icon name="gift" size={25} color="#fff" />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -171,6 +156,59 @@ const styles = StyleSheet.create({
     color: "#aaa",
     marginBottom: 10,
   },
+  removeButton: {
+    backgroundColor: "red",
+    padding: 8,
+    borderRadius: 5,
+    width: "60%",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  removeText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  wishlistButton: {
+    borderWidth: 1,
+    borderColor: "#fff",
+    padding: 8,
+    borderRadius: 5,
+    width: "80%",
+    alignItems: "center",
+  },
+  wishlistText: {
+    color: "#fff",
+    fontSize: 14,
+  },
+  summaryContainer: {
+    backgroundColor: "#111",
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 10,
+  },
+  summaryTitle: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  summaryText: {
+    fontSize: 16,
+    color: "#aaa",
+  },
+  checkoutButton: {
+    backgroundColor: "blue",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  checkoutText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   bottomNav: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -188,5 +226,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
 
 export default withAuth(CartScreen, "user");
