@@ -1,4 +1,4 @@
-export const register = async (user: { username: string; firstName: string; lastName: string; country: string; email: string; password: string }) => {
+export const register = async (user: { username: string; firstName: string; lastName: string; country: string; email: string; password: string; rol:string; }) => {
   try {
     console.log("Enviando datos:", user);
 

@@ -40,7 +40,7 @@ const CartScreen = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.noAccessText}>No tienes acceso. Inicia sesión para ver tu carrito.</Text>
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/Login")}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/login")}>
           <Text style={styles.loginText}>Iniciar Sesión</Text>
         </TouchableOpacity>
       </View>

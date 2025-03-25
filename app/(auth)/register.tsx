@@ -85,7 +85,7 @@ const RegisterPage: React.FC = () => {
         await storeToken(data.token);
         Alert.alert("Excelente", "Tu registro fue exitoso.");
         
-        router.push("/"); 
+        router.push("/Home"); 
       } else {
         Alert.alert("Error", data.message || "No se pudo registrar.");
       }
