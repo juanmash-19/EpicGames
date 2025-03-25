@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
+import withAuth from "../../libs/auth/withAuth";
 
 const CartScreen = () => {
   const router = useRouter();
@@ -9,10 +11,41 @@ const CartScreen = () => {
     { id: 1, title: "LEGO FORTNITE", description: "Fantasy, Violence 10+", image: require("../../assets/lego_fortnite.png") },
     { id: 2, title: "Prince of Persia: The Lost Crown", description: "Action, Adventure 12+", image: require("../../assets/prince_of_persia.png") },
   ]);
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
 
-  const removeItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter(item => item.id !== id));
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem("authToken");
+      setToken(storedToken);
+      setLoading(false);
+    };
+
+    fetchToken();
+  }, []);
+
+  const removeItem = (id: number) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
+    );
+  }
+
+  if (!token) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.noAccessText}>No tienes acceso. Inicia sesión para ver tu carrito.</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/Login")}>
+          <Text style={styles.loginText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -20,7 +53,7 @@ const CartScreen = () => {
 
       <ScrollView style={styles.scrollContainer} contentContainerStyle={{ paddingBottom: 20 }}>
         {cartItems.length > 0 ? (
-          cartItems.map(item => (
+          cartItems.map((item) => (
             <View key={item.id} style={styles.itemContainer}>
               <Image source={item.image} style={styles.image} />
               <View style={styles.itemDetails}>
@@ -68,12 +101,37 @@ const CartScreen = () => {
   );
 };
 
+// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
-    paddingHorizontal: 20, 
-    justifyContent: "space-between", 
+    paddingHorizontal: 20,
+    justifyContent: "space-between",
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+  },
+  noAccessText: {
+    color: "#fff",
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 20,
+  },
+  loginButton: {
+    backgroundColor: "blue",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  loginText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   header: {
     fontSize: 24,
@@ -184,4 +242,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartScreen;
+// Exportando el componente con autenticación
+export default withAuth(CartScreen);

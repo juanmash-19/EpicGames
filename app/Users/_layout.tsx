@@ -18,7 +18,7 @@ const UsersScreen = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://172.20.10.3:4000/api/v1/users");
+        const response = await fetch("http://172.20.10.4:4000/api/v1/auth/users");
         if (!response.ok) {
           throw new Error("Error al obtener los usuarios");
         }

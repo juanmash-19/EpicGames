@@ -22,6 +22,10 @@ const HomeLayout = () => {
   const [isLogged, setIsLogged] = useState(false)
 
   useEffect(() => {
+    router.replace("/Home"); 
+  }, []);
+
+  useEffect(() => {
     if (times == 0){
       removeToken()
       setTimes(times + 1)

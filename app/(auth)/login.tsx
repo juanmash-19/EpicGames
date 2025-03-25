@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import { 
   View, Text, TextInput, TouchableOpacity, StyleSheet, 
-  Image, Linking, Alert 
+  Image, Linking 
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { login } from "../../libs/auth/ServiceLogin/api-services";
-import { storeToken } from "../../libs/auth/StoreToken";
+import { storeToken, getToken } from "../../libs/auth/StoreToken";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,22 +16,24 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
-    loadCredentials();
+    checkAuthStatus();
   }, []);
 
-  // Cargar credenciales almacenadas
-  const loadCredentials = async () => {
+  // ✅ Verifica si el usuario ya está autenticado
+  const checkAuthStatus = async () => {
     try {
-      const storedEmail = await AsyncStorage.getItem("userEmail");
-      const storedPassword = await AsyncStorage.getItem("userPassword");
-      if (storedEmail) setEmail(storedEmail);
-      if (storedPassword) setPassword(storedPassword);
+      const token = await getToken();
+      console.log("🔍 Token almacenado:", token);
+      
+      if (token && token !== "null" && token !== "undefined") {
+        router.push("/Home"); // Redirige si el token es válido
+      }
     } catch (error) {
-      console.error("Error al cargar las credenciales", error);
+      console.error("🚨 Error verificando autenticación:", error);
     }
   };
 
-  // Validar formato del correo y contraseña
+  // ✅ Validar formato del correo y contraseña
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -47,34 +48,39 @@ const LoginPage: React.FC = () => {
     return true;
   };
 
+  // ✅ Iniciar sesión y almacenar token correctamente
   const handleLogin = async () => {
     if (!validateForm()) return;
-    console.log("No errores");
-        const userdata = {
-          email,
-          password
-        }
-      try {
-      const data = await login(userdata);
-      
+    
+    try {
+      const data = await login({ email, password });
+
       if (data && data.token) {
+        console.log("✅ Token recibido del backend:", data.token);
+
         await storeToken(data.token);
-        router.push("/Home"); 
+        const storedToken = await getToken(); // Recuperamos el token después de guardarlo
+        console.log("🔍 Token almacenado en AsyncStorage:", storedToken);
+
+        if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
+          router.push("/Home");
+        } else {
+          setError("⚠️ Error al almacenar el token.");
+        }
       } else {
         setError("❌ Credenciales incorrectas.");
       }
     } catch (error) {
-      console.error("Error en el inicio de sesión:", error);
+      console.error("🚨 Error en el inicio de sesión:", error);
       setError("❌ Ocurrió un error, intenta de nuevo.");
     }
-        
   };
 
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       
-      <Text style={styles.title}>Inicia Sesión</Text>
+      <Text style={styles.title}>Inicia Sesión</Text>
 
       <TextInput
         style={styles.input}
