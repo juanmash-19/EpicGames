@@ -12,7 +12,7 @@ export interface User {
 export const fetchUsers = async (): Promise<User[]> => {
   try {
     console.log(" Obteniendo usuarios:", );
-    const response = await fetch("http://192.168.1.10:4000/api/v1/users");
+    const response = await fetch("http://172.20.10.4:4000/api/v1/users");
     if (!response.ok) {
       throw new Error("Error al obtener los usuarios");
     }

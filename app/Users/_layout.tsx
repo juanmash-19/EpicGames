@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-} from "react-native";
+import {View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, Alert,} from "react-native";
 import { useRouter } from "expo-router";
 import withAuth from "../../libs/auth/withAuth";
-import {
-  fetchUsers,
-  createUser,
-  updateUser,
-  deleteUser,
-  User,
-} from "../../libs/auth/ServiceUsers/ServiceUsers";
+import {fetchUsers, createUser, updateUser, deleteUser, User,} from "../../libs/auth/ServiceUsers/api-services";
 
 const UsersScreen = () => {
   const [users, setUsers] = useState<User[]>([]);

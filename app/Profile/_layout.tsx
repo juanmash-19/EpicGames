@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, ScrollView } from "react-native";
+import { 
+  View, Text, TextInput, TouchableOpacity, StyleSheet, 
+  ActivityIndicator, Alert, ScrollView 
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import withAuth from "../../libs/auth/withAuth";
+import { fetchUserProfile, updateUserProfile } from "../../libs/auth/ServiceProfile/api-services";
 
 const ProfileScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -16,73 +20,41 @@ const ProfileScreen = () => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const loadProfile = async () => {
       const storedToken = await AsyncStorage.getItem("authToken");
       setToken(storedToken);
 
       if (storedToken) {
-        try {
-          const res = await fetch("http://192.168.1.17:4000/api/v1/users/profile", {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            setName(data.name || "");
-            setLastname(data.lastname || "");
-            setEmail(data.email || "");
-            setCountry(data.country || "");
-            setUsername(data.username || "");
-          } else {
-            Alert.alert("Error", "No se pudo cargar la información del perfil.");
-          }
-        } catch (error) {
-          console.error("Error fetching profile:", error);
+        const data = await fetchUserProfile(storedToken);
+        if (data) {
+          setName(data.name || "");
+          setLastname(data.lastname || "");
+          setEmail(data.email || "");
+          setCountry(data.country || "");
+          setUsername(data.username || "");
+        } else {
+          Alert.alert("Error", "No se pudo cargar la información del perfil.");
         }
       }
 
       setLoading(false);
     };
 
-    fetchProfile();
+    loadProfile();
   }, []);
 
   const handleUpdate = async () => {
     if (!token) return;
 
-    const payload = {
-      name,
-      lastname,
-      email,
-      country,
-      username,
-      currentPassword, // Contraseña actual
-      newPassword,     // Nueva contraseña
-    };
+    const payload = { name, lastname, email, country, username, currentPassword, newPassword };
 
     try {
-      const res = await fetch("http://192.168.1.17:4000/api/v1/users/profile", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        Alert.alert("Perfil actualizado correctamente");
-        setCurrentPassword("");
-        setNewPassword("");
-      } else {
-        const error = await res.json();
-        Alert.alert("Error", error.message || "No se pudo actualizar el perfil");
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      Alert.alert("Error", "Ocurrió un error inesperado");
+      await updateUserProfile(token, payload);
+      Alert.alert("Perfil actualizado correctamente");
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
     }
   };
 
