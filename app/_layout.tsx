@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Alert } from "react-native";
 import { Drawer } from "expo-router/drawer";
-import { Alert } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Menu, Divider, PaperProvider } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
-import { removeToken, getToken } from '../libs/auth/StoreToken'
-
-
+import { removeToken, getToken } from '../libs/auth/StoreToken';
 
 import "../global.css";
 
@@ -18,20 +15,19 @@ const HomeLayout = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const router = useRouter();
-  const [times, setTimes] = useState(0)
-  
-  const [isLogged, setIsLogged] = useState(false)
+  const [times, setTimes] = useState(0);
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
     router.replace("/Home"); 
   }, []);
 
   useEffect(() => {
-    if (times == 0){
-      removeToken()
-      setTimes(times + 1)
+    if (times == 0) {
+      removeToken();
+      setTimes(times + 1);
     }
-  })
+  });
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -45,11 +41,11 @@ const HomeLayout = () => {
 
   useEffect(() => {
     const verifySession = async () => {
-      const token = await getToken()
-      setIsLogged(token != null)
-    }
-    verifySession()
-  }, [getToken()])
+      const token = await getToken();
+      setIsLogged(token != null);
+    };
+    verifySession();
+  }, [getToken()]);
 
   // Resetear el estado del menú al cambiar de pantalla
   useFocusEffect(
@@ -101,25 +97,34 @@ const HomeLayout = () => {
                       title="Registrarse"
                     />
                   </>
-                  ) : (
+                ) : (
+                  <>
+                    <Menu.Item
+                      onPress={() => {
+                        setMenuVisible(false);
+                        router.push("/PurchaseHistory");
+                      }}
+                      title="Historial de Compras"
+                    />
+                    <Divider />
                     <Menu.Item
                       onPress={() => {
                         setMenuVisible(false);
                         removeToken();
-                        Alert.alert("Excelente", "Se cerro tu sesión.");
+                        Alert.alert("Excelente", "Se cerró tu sesión.");
                         router.push("/Home");
                       }}
-                      title="Cerrar sesion"
+                      title="Cerrar sesión"
                     />
-                  )
-                }
+                  </>
+                )}
               </Menu>
             </View>
           ),
         }}
       >
         <Drawer.Screen name="Home" options={{ drawerLabel: "Home", title: "Inicio" }} />
-        <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { height: 0 } }} />
+        <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { height: 0 } }} />
         <Drawer.Screen name="Biblioteca" options={{ drawerLabel: "Biblioteca de Juegos", title: "Biblioteca" }} />
         <Drawer.Screen name="gameStore" options={{ drawerLabel: "Tienda de Juegos", title: "Tienda" }} />
         <Drawer.Screen name="notices"  options={{ drawerLabel: "Noticias", title: "Noticias" }} />

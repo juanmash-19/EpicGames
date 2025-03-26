@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Alert } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons"; 
 import withAuth from "../../libs/auth/withAuth"; 
 
@@ -10,6 +10,7 @@ const AddGameScreen = () => {
 
   const handleGuardar = () => {
     console.log("Juego guardado:", { descripcion, precio, imagen });
+    Alert.alert("Éxito", "El videojuego se ha agregado exitosamente");
   };
 
   const handleCancelar = () => {
