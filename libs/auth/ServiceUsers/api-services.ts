@@ -24,7 +24,7 @@ export const fetchUsers = async (): Promise<User[]> => {
 };
 
 export const createUser = async (user: Partial<User>): Promise<User> => {
-  const response = await fetch("http://192.168.69.110:4000/api/v1/users", {
+  const response = await fetch("http://172.20.10.4:4000/api/v1/users", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
@@ -36,7 +36,7 @@ export const createUser = async (user: Partial<User>): Promise<User> => {
 };
 
 export const updateUser = async (id: number, user: Partial<User>): Promise<void> => {
-  const response = await fetch(`http://192.168.69.110:4000/api/v1/users/${id}`, {
+  const response = await fetch(`http://172.20.10.4:4000/api/v1/users/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
@@ -47,7 +47,7 @@ export const updateUser = async (id: number, user: Partial<User>): Promise<void>
 };
 
 export const deleteUser = async (id: number): Promise<void> => {
-  const response = await fetch(`http://192.168.69.110:4000/api/v1/users/${id}`, {
+  const response = await fetch(`http://172.20.10.4:4000/api/v1/users/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {

@@ -2,8 +2,6 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import visaIcon from "../../assets/visa.jpg";
-import mastercardIcon from "../../assets/mastercard.png";
 
 const PaymentScreen = () => {
   const router = useRouter();
@@ -11,7 +9,7 @@ const PaymentScreen = () => {
 
   const onSubmit = (data: any) => {
     console.log("Datos de pago:", data);
-    router.push("/success"); 
+    router.push("/Carrito/SuccessScreen"); 
   };
 
   return (
@@ -19,8 +17,8 @@ const PaymentScreen = () => {
       <Text style={styles.title}>DATOS DE LA TARJETA</Text>
       
       <View style={styles.cardIcons}>
-        <Image source={visaIcon} style={styles.icon} />
-        <Image source={mastercardIcon} style={styles.icon} />
+      <Image source={require("../../assets/visa.jpg")} style={styles.icon} />
+      <Image source={require("../../assets/mastercard.png")} style={styles.icon} />
       </View>
 
       {/* Número de Tarjeta */}
@@ -43,7 +41,7 @@ const PaymentScreen = () => {
         )}
         name="cardNumber"
       />
-      {errors.cardNumber && <Text style={styles.errorText}>{errors.cardNumber.message}</Text>}
+      {errors.cardNumber?.message && <Text style={styles.errorText}>{String(errors.cardNumber.message)}</Text>}
 
       {/* Expiración y CVV */}
       <View style={styles.row}>
@@ -57,7 +55,7 @@ const PaymentScreen = () => {
             <TextInput
               style={[styles.inputSmall, errors.expiry && styles.inputError]}
               placeholder="MM/YY *"
-              keyboardType="numeric"
+              keyboardType="default"
               maxLength={5}
               onChangeText={onChange}
               value={value}
@@ -87,8 +85,9 @@ const PaymentScreen = () => {
           name="cvv"
         />
       </View>
-      {errors.expiry?.message && <Text style={styles.errorText}>{errors.expiry.message}</Text>}
-      {errors.cvv?.message && <Text style={styles.errorText}>{errors.cvv.message}</Text>}
+      {errors.expiry?.message && <Text style={styles.errorText}>{String(errors.expiry.message)}</Text>}
+      {errors.cvv?.message && <Text style={styles.errorText}>{String(errors.cvv.message)}</Text>}
+
 
       {/* Guardar Método de Pago */}
       <Text style={styles.label}>¿Quieres guardar este método de pago?</Text>
