@@ -23,7 +23,7 @@ const AddGameScreen = () => {
       source={{ uri: "https://example.com/background-image.jpg" }}
       style={styles.background}
     >
-      <View style={styles.overlay} /> {/* Efecto de superposición */}
+      <View style={styles.overlay} /> 
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <FontAwesome5 name="gamepad" size={32} color="#fff" style={styles.icon} />

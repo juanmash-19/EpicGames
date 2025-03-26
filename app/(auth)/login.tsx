@@ -3,6 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, 
   Image, Linking 
 } from "react-native";
+import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import { login } from "../../libs/auth/ServiceLogin/api-services";
@@ -26,7 +27,7 @@ const LoginPage: React.FC = () => {
       console.log("🔍 Token almacenado:", token);
       
       if (token && token !== "null" && token !== "undefined") {
-        router.push("/Home"); // Redirige si el token es válido
+        router.push("/Home"); 
       }
     } catch (error) {
       console.error("🚨 Error verificando autenticación:", error);
@@ -63,6 +64,7 @@ const LoginPage: React.FC = () => {
         console.log("🔍 Token almacenado en AsyncStorage:", storedToken);
 
         if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
+          Alert.alert("Excelente", "Se inició tu sesión.");
           router.push("/Home");
         } else {
           setError("⚠️ Error al almacenar el token.");

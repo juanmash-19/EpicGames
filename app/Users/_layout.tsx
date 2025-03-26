@@ -2,35 +2,19 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import withAuth from "../../libs/auth/withAuth"; 
+import { fetchUsers, User } from "../../libs/auth/ServiceUsers/ServiceUsers";
 
 const UsersScreen = () => {
-  interface User {
-    id: number;
-    name: string;
-    lastname: string;
-    email: string;
-    country: string;
-    rol: string;
-  }
-
   const [users, setUsers] = useState<User[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("http://192.168.1.4:4000/api/v1/auth/users");
-        if (!response.ok) {
-          throw new Error("Error al obtener los usuarios");
-        }
-        const data: User[] = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
-      }
+    const loadUsers = async () => {
+      const data = await fetchUsers();
+      setUsers(data);
     };
 
-    fetchUsers();
+    loadUsers();
   }, []);
 
   return (
@@ -43,7 +27,7 @@ const UsersScreen = () => {
               <Text style={styles.userName}>{user.name} {user.lastname}</Text>
               <Text style={styles.userEmail}>Correo: {user.email}</Text>
               <Text style={styles.userCountry}>País: {user.country}</Text>
-              <Text style={styles.userRole}>Rol: {user.rol}</Text>
+              <Text style={styles.userRol}>Rol: {user.rol}</Text>
             </View>
           ))
         ) : (
@@ -96,7 +80,7 @@ const styles = StyleSheet.create({
     color: "#bd93f9",
     marginBottom: 3,
   },
-  userRole: {
+  userRol: {
     fontSize: 16,
     color: "#ff79c6",
   },
