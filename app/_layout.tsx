@@ -125,8 +125,9 @@ const HomeLayout = () => {
         <Drawer.Screen name="notices"  options={{ drawerLabel: "Noticias", title: "Noticias" }} />
         <Drawer.Screen name="wishlist" options={{ drawerLabel: "Lista de Deseos", title: "Lista de Deseos" }} />
         <Drawer.Screen name="Carrito" options={{ drawerLabel: "Carrito", title: "Carrito" }} />
-        <Drawer.Screen name="Games" options={{ drawerLabel: "Agregar Videojuego", title: "Agregar Videojuego" }} />
-        <Drawer.Screen name="Users" options={{ drawerLabel: "Gestión de usuarios", title: "Gestión de usuarios" }} />
+        <Drawer.Screen name="Games" options={{ drawerLabel: "Gestión de Videojuegos", title: "Gestión de Videojuegos" }} />
+        <Drawer.Screen name="Users" options={{ drawerLabel: "Gestión de Usuarios", title: "Gestión de Usuarios" }} />
+        <Drawer.Screen name="Profile" options={{ drawerLabel: "Gestión de Perfil", title: "Gestión de Perfil" }} />
       </Drawer>
     </PaperProvider>
   );
