@@ -5,12 +5,12 @@ const Index: React.FC = () => {
   return (
     <View className="flex-1 bg-black">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="p-4">
-        {/* Logo */}
+        
         <View className="flex flex-row justify-center items-center p-4">
           <Image source={require("../../assets/logo.png")} className="w-40 h-20" resizeMode="contain" />
         </View>
 
-        {/* Bienvenida */}
+        
         <Text className="text-white text-center text-2xl font-bold mt-4">Bienvenido a Epic Games</Text>
         <Text className="text-white text-center text-2xl font-bold mt-4">Esta es nuestra nueva colaboración:</Text>
 
