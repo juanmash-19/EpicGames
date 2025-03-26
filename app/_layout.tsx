@@ -102,14 +102,6 @@ const HomeLayout = () => {
                     <Menu.Item
                       onPress={() => {
                         setMenuVisible(false);
-                        router.push("/PurchaseHistory");
-                      }}
-                      title="Historial de Compras"
-                    />
-                    <Divider />
-                    <Menu.Item
-                      onPress={() => {
-                        setMenuVisible(false);
                         removeToken();
                         Alert.alert("Excelente", "Se cerró tu sesión.");
                         router.push("/Home");
