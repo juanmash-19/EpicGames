@@ -13,7 +13,7 @@ const Index = () => {
           let iconName = "";
 
           switch (route.name) {
-            case "Home":
+            case "index":
               iconName = "home";
               break;
             case "GameStore":
