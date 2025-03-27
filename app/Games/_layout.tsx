@@ -79,6 +79,37 @@ const AddGameScreen = () => {
     }
   };
 
+  const actualizarVideojuego = async (id: string, updatedData: Partial<Videogame>) => {
+    try {
+      const videojuegoActualizado = await videogameService.update(id, {
+        ...videojuegos.find((juego) => juego.id === id),
+        ...updatedData,
+      } as Videogame);
+      setVideojuegos((prevVideojuegos) =>
+        prevVideojuegos.map((juego) =>
+          juego.id === id ? { ...juego, ...videojuegoActualizado } : juego
+        )
+      );
+      Alert.alert("Éxito", "El videojuego se actualizó correctamente.");
+    } catch (error) {
+      console.error("Error al actualizar el videojuego:", error);
+      Alert.alert("Error", "No se pudo actualizar el videojuego.");
+    }
+  };
+
+  const eliminarVideojuego = async (id: string) => {
+    try {
+      await videogameService.delete(id);
+      setVideojuegos((prevVideojuegos) =>
+        prevVideojuegos.filter((juego) => juego.id !== id)
+      );
+      Alert.alert("Éxito", "El videojuego se eliminó correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar el videojuego:", error);
+      Alert.alert("Error", "No se pudo eliminar el videojuego.");
+    }
+  };
+
   const renderItem = ({ item }: { item: Videogame }) => {
     const imageUrl =
       typeof item.image === "string"
@@ -97,6 +128,23 @@ const AddGameScreen = () => {
           <Text style={styles.gamePrice}>
             Precio: ${typeof item.price === "number" ? item.price.toFixed(2) : "No disponible"}
           </Text>
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={styles.updateButton}
+              onPress={() => {
+                const updatedData = { name: "Nuevo Nombre" }; // Replace with actual data
+                actualizarVideojuego(item.id!, updatedData);
+              }}
+            >
+              <Text style={styles.buttonText}>Actualizar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => eliminarVideojuego(item.id!)}
+            >
+              <Text style={styles.buttonText}>Eliminar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -169,6 +217,23 @@ const AddGameScreen = () => {
                 <Text style={styles.gamePrice}>
                   Precio: ${typeof juego.price === "number" ? juego.price.toFixed(2) : "No disponible"}
                 </Text>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity
+                    style={styles.updateButton}
+                    onPress={() => {
+                      const updatedData = { name: "Nuevo Nombre" }; // Replace with actual data
+                      actualizarVideojuego(juego.id!, updatedData);
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Actualizar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => eliminarVideojuego(juego.id!)}
+                  >
+                    <Text style={styles.buttonText}>Eliminar</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           ))}
@@ -294,6 +359,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#28a745",
+  },
+  actionButtons: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  updateButton: {
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  deleteButton: {
+    backgroundColor: "#dc3545",
+    padding: 10,
+    borderRadius: 5,
   },
 });
 

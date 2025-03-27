@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.69.110:4000/api/v1/videogames";
+const API_URL = "http://172.20.10.4:4000/api/v1/videogames";
 
 export interface Videogame {
   id?: string;
@@ -19,7 +19,7 @@ export const videogameService = {
     const videojuegosAjustados = data.map((juego: any) => ({
       ...juego,
       image: juego.image
-        ? `http://192.168.69.110:4000/${juego.image.replace(/\\/g, "/")}` 
+        ? `http://172.20.10.4:4000/${juego.image.replace(/\\/g, "/")}` 
         : null,
       price: typeof juego.price === "string" ? parseFloat(juego.price) : juego.price, 
     }));

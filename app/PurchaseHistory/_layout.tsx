@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import { fetchPurchaseHistory } from "../../libs/auth/ServicePurchase/api-service"; 
 
 interface Purchase {
   id: string;
@@ -8,23 +9,35 @@ interface Purchase {
   price: string;
 }
 
-// Datos de ejemplo
-const purchaseData: Purchase[] = [
-  { id: "1", gameTitle: "Cyberpunk 2077", date: "2025-03-10", price: "$49.99" },
-  { id: "2", gameTitle: "Elden Ring", date: "2025-02-28", price: "$59.99" },
-  { id: "3", gameTitle: "God of War", date: "2025-01-15", price: "$39.99" },
-];
-
 const PurchaseHistory: React.FC = () => {
+  const [purchaseData, setPurchaseData] = useState<Purchase[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const userId = 14;
+  
+    const loadPurchases = async () => {
+      const data = await fetchPurchaseHistory(userId); // ✅ Pasar el userId
+      setPurchaseData(data);
+      setLoading(false);
+    };
+  
+    loadPurchases();
+  }, []);
+  
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Historial de Compras</Text>
-      {purchaseData.length === 0 ? (
+
+      {loading ? (
+        <Text style={styles.loading}>Cargando...</Text>
+      ) : purchaseData.length === 0 ? (
         <Text style={styles.emptyMessage}>No hay compras registradas.</Text>
       ) : (
         <FlatList
           data={purchaseData}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Text style={styles.gameTitle}>{item.gameTitle}</Text>
@@ -50,6 +63,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     marginBottom: 15,
+  },
+  loading: {
+    color: "#fff",
+    textAlign: "center",
+    marginTop: 20,
   },
   emptyMessage: {
     color: "#aaa",
