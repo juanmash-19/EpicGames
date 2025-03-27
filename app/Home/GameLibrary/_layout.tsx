@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-import Library from "../../../components/molecules/Library"; // Se importa el nuevo componente
+import Library from "../../../components/molecules/Library"; 
 
 const GameLibrary = () => {
   return (

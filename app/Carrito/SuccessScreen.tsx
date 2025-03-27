@@ -8,7 +8,7 @@ const SuccessScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.successText}>✅ ¡Pago Exitoso!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/home")}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/Home")}>
         <Text style={styles.buttonText}>Volver al Inicio</Text>
       </TouchableOpacity>
     </View>

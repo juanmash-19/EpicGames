@@ -5,7 +5,7 @@ const Layout = () => {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" options={{ title: "Carrito" }} />
       <Stack.Screen name="PaymentScreen" options={{ title: "Pago" }} />
-      <Stack.Screen name="SuccessScreen" options={{ title: "Éxito" }} />
+      <Stack.Screen name="SuccessScreen" options={{ title: "success" }} />
     </Stack>
   );
 };

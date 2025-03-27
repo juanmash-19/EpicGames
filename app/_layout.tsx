@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Alert } from "react-native";
 import { Drawer } from "expo-router/drawer";
 import NetInfo from "@react-native-community/netinfo";
 import { Menu, Divider, PaperProvider } from "react-native-paper";
@@ -7,9 +7,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
-import { removeToken, getToken } from '../libs/auth/StoreToken'
-
-
+import { removeToken, getToken } from '../libs/auth/StoreToken';
 
 import "../global.css";
 
@@ -17,20 +15,19 @@ const HomeLayout = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const router = useRouter();
-  const [times, setTimes] = useState(0)
-  
-  const [isLogged, setIsLogged] = useState(false)
+  const [times, setTimes] = useState(0);
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
     router.replace("/Home"); 
   }, []);
 
   useEffect(() => {
-    if (times == 0){
-      removeToken()
-      setTimes(times + 1)
+    if (times == 0) {
+      removeToken();
+      setTimes(times + 1);
     }
-  })
+  });
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -44,11 +41,11 @@ const HomeLayout = () => {
 
   useEffect(() => {
     const verifySession = async () => {
-      const token = await getToken()
-      setIsLogged(token != null)
-    }
-    verifySession()
-  }, [getToken()])
+      const token = await getToken();
+      setIsLogged(token != null);
+    };
+    verifySession();
+  }, [getToken()]);
 
   // Resetear el estado del menú al cambiar de pantalla
   useFocusEffect(
@@ -100,31 +97,34 @@ const HomeLayout = () => {
                       title="Registrarse"
                     />
                   </>
-                  ) : (
+                ) : (
+                  <>
                     <Menu.Item
                       onPress={() => {
                         setMenuVisible(false);
                         removeToken();
-                        router.push("/");
+                        Alert.alert("Excelente", "Se cerró tu sesión.");
+                        router.push("/Home");
                       }}
-                      title="Cerrar sesion"
+                      title="Cerrar sesión"
                     />
-                  )
-                }
+                  </>
+                )}
               </Menu>
             </View>
           ),
         }}
       >
         <Drawer.Screen name="Home" options={{ drawerLabel: "Home", title: "Inicio" }} />
-        <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { height: 0 } }} />
+        <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { height: 0 } }} />
         <Drawer.Screen name="Biblioteca" options={{ drawerLabel: "Biblioteca de Juegos", title: "Biblioteca" }} />
         <Drawer.Screen name="gameStore" options={{ drawerLabel: "Tienda de Juegos", title: "Tienda" }} />
         <Drawer.Screen name="notices"  options={{ drawerLabel: "Noticias", title: "Noticias" }} />
         <Drawer.Screen name="wishlist" options={{ drawerLabel: "Lista de Deseos", title: "Lista de Deseos" }} />
         <Drawer.Screen name="Carrito" options={{ drawerLabel: "Carrito", title: "Carrito" }} />
-        <Drawer.Screen name="Games" options={{ drawerLabel: "Agregar Videojuego", title: "Agregar Videojuego" }} />
-        <Drawer.Screen name="Users" options={{ drawerLabel: "Usuarios", title: "Usuarios" }} />
+        <Drawer.Screen name="Games" options={{ drawerLabel: "Gestión de Videojuegos", title: "Gestión de Videojuegos" }} />
+        <Drawer.Screen name="Users" options={{ drawerLabel: "Gestión de Usuarios", title: "Gestión de Usuarios" }} />
+        <Drawer.Screen name="Profile" options={{ drawerLabel: "Gestión de Perfil", title: "Gestión de Perfil" }} />
       </Drawer>
     </PaperProvider>
   );

@@ -16,7 +16,6 @@ const NewsItem: React.FC<NewsItemProps> = ({ image, title, description }) => {
       <GameImage source={image} style={styles.image} />
       <TextLabel text={title} style={styles.title} />
       <TextLabel text={description} style={styles.description} />
-      <Button text="Leer Más" onPress={() => console.log(`Leyendo: ${title}`)} />
     </View>
   );
 };
@@ -27,18 +26,44 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginBottom: 20,
+    marginHorizontal: 10,
+    alignItems: "center", 
+  },
+  image: {
+    width: "80%", 
+    height: 180, 
+    borderRadius: 10,
+    resizeMode: "cover",
+    alignSelf: "center", 
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
-    marginBottom: 5,
+    marginBottom: 10,
+    textAlign: "center", 
   },
   description: {
     fontSize: 14,
     color: "#aaa",
-    marginBottom: 10,
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  button: {
+    backgroundColor: "#8000FF", 
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    width: "80%", 
+    alignSelf: "center", 
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
+
+
 
 export default NewsItem;
