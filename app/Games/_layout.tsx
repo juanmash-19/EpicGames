@@ -1,95 +1,314 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Alert, Image, ScrollView } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons"; 
+import * as ImagePicker from "expo-image-picker"; 
 import withAuth from "../../libs/auth/withAuth"; 
+import { videogameService, Videogame } from "../../libs/auth/ServiceGame/api-service";
 
 const AddGameScreen = () => {
+  const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
-  const [imagen, setImagen] = useState("");
+  const [imagen, setImagen] = useState<string | null>(null); 
+  const [videojuegos, setVideojuegos] = useState<Videogame[]>([]); 
 
-  const handleGuardar = () => {
-    console.log("Juego guardado:", { descripcion, precio, imagen });
+
+  useEffect(() => {
+    const fetchVideojuegos = async () => {
+      try {
+        const juegos = await videogameService.getAll();
+        console.log("Datos recibidos del backend:", juegos);
+        setVideojuegos(juegos);
+      } catch (error) {
+        console.error("Error al obtener los videojuegos:", error);
+        Alert.alert("Error", "No se pudieron cargar los videojuegos.");
+      }
+    };
+
+    fetchVideojuegos();
+  }, []);
+
+  const seleccionarImagen = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permiso denegado", "Se necesita acceso a la galería para seleccionar una imagen.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImagen(result.assets[0].uri);
+      console.log("Imagen seleccionada:", result.assets[0].uri);
+    }
   };
 
-  const handleCancelar = () => {
-    setDescripcion("");
-    setPrecio("");
-    setImagen("");
+  // Función para guardar un videojuego
+  const guardarVideojuego = async () => {
+    if (!nombre || !descripcion || !precio || !imagen) {
+      Alert.alert("Error", "Por favor, completa todos los campos antes de guardar.");
+      return;
+    }
+
+    try {
+      const nuevoVideojuego: Videogame = {
+        name: nombre,
+        description: descripcion,
+        price: parseFloat(precio),
+        image: imagen,
+      };
+
+      const videojuegoGuardado = await videogameService.create(nuevoVideojuego);
+      console.log("Videojuego guardado:", videojuegoGuardado);
+
+      setVideojuegos((prevVideojuegos) => [...prevVideojuegos, videojuegoGuardado]);
+
+      setNombre("");
+      setDescripcion("");
+      setPrecio("");
+      setImagen(null);
+
+      Alert.alert("Éxito", "El videojuego se guardó correctamente.");
+    } catch (error) {
+      console.error("Error al guardar el videojuego:", error);
+      Alert.alert("Error", "No se pudo guardar el videojuego. Inténtalo de nuevo.");
+    }
+  };
+
+  const actualizarVideojuego = async (id: string, updatedData: Partial<Videogame>) => {
+    try {
+      const existingVideogame = videojuegos.find((juego) => juego.id === id);
+      if (!existingVideogame) {
+        Alert.alert("Error", "No se encontró el videojuego para actualizar.");
+        return;
+      }
+
+      // Verificar si la imagen ha cambiado y actualizarla por separado si es un archivo
+      if (updatedData.image instanceof File) {
+        try {
+          await videogameService.updateImage(id, updatedData.image);
+          console.log("Imagen actualizada correctamente.");
+        } catch (error) {
+          console.error("Error al actualizar la imagen:", error);
+          Alert.alert("Error", "No se pudo actualizar la imagen.");
+          return; // Detener si la actualización de la imagen falla
+        }
+      }
+
+      // Actualizar los demás datos del videojuego
+      const videojuegoActualizado = await videogameService.update(id, {
+        ...existingVideogame,
+        ...updatedData,
+        image: typeof updatedData.image === "string" ? updatedData.image : existingVideogame.image, // Preserve image URL if not updated
+      });
+
+      setVideojuegos((prevVideojuegos) =>
+        prevVideojuegos.map((juego) =>
+          juego.id === id ? { ...juego, ...videojuegoActualizado } : juego
+        )
+      );
+      Alert.alert("Éxito", "El videojuego se actualizó correctamente.");
+    } catch (error) {
+      console.error("Error al actualizar el videojuego:", error);
+      Alert.alert("Error", "No se pudo actualizar el videojuego.");
+    }
+  };
+
+  const eliminarVideojuego = async (id: string) => {
+    try {
+      await videogameService.delete(id);
+      setVideojuegos((prevVideojuegos) =>
+        prevVideojuegos.filter((juego) => juego.id !== id)
+      );
+      Alert.alert("Éxito", "El videojuego se eliminó correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar el videojuego:", error);
+      Alert.alert("Error", "No se pudo eliminar el videojuego.");
+    }
+  };
+
+  const renderItem = ({ item }: { item: Videogame }) => {
+    const imageUrl =
+      typeof item.image === "string"
+        ? item.image
+        : "https://via.placeholder.com/150";
+
+    return (
+      <View style={styles.gameItem}>
+        <Image
+          source={{ uri: imageUrl }}
+          style={styles.gameImage}
+        />
+        <View style={styles.gameInfo}>
+          <Text style={styles.gameName}>{item.name}</Text>
+          <Text style={styles.gameDescription}>{item.description}</Text>
+          <Text style={styles.gamePrice}>
+            Precio: ${typeof item.price === "number" ? item.price.toFixed(2) : "No disponible"}
+          </Text>
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.updateButton]}
+              onPress={() => {
+                const updatedData = { name: "Nuevo Nombre" }; // Replace with actual data
+                actualizarVideojuego(item.id!, updatedData);
+              }}
+            >
+              <Text style={styles.buttonText}>Actualizar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.deleteButton]}
+              onPress={() => eliminarVideojuego(item.id!)}
+            >
+              <Text style={styles.buttonText}>Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.detailsButton]}
+              onPress={() => Alert.alert("Detalles del Videojuego", `Nombre: ${item.name}\nDescripción: ${item.description}\nPrecio: ${item.price}`)}
+            >
+              <Text style={styles.buttonText}>Ver Detalles</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
   };
 
   return (
-    <ImageBackground
-      source={{ uri: "https://example.com/background-image.jpg" }}
-      style={styles.background}
-    >
-      <View style={styles.overlay} /> {/* Efecto de superposición */}
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <FontAwesome5 name="gamepad" size={32} color="#fff" style={styles.icon} />
-          <Text style={styles.header}>Agregar Videojuego</Text>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Descripción"
-          placeholderTextColor="#aaa"
-          value={descripcion}
-          onChangeText={setDescripcion}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Precio"
-          placeholderTextColor="#aaa"
-          value={precio}
-          onChangeText={setPrecio}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="URL de la Imagen"
-          placeholderTextColor="#aaa"
-          value={imagen}
-          onChangeText={setImagen}
-        />
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={handleGuardar}>
-            <Text style={styles.buttonText}>Guardar</Text>
+    <ScrollView style={[styles.scrollContainer, { backgroundColor: "#000" }]}>
+      <ImageBackground
+        source={{ uri: "https://example.com/background-image.jpg" }}
+        style={styles.background}
+      >
+        <View style={styles.overlay} />
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <FontAwesome5 name="gamepad" size={32} color="#fff" style={styles.icon} />
+            <Text style={styles.header}>Agregar Videojuego</Text>
+          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Nombre"
+            placeholderTextColor="#aaa"
+            value={nombre}
+            onChangeText={setNombre}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Descripción"
+            placeholderTextColor="#aaa"
+            value={descripcion}
+            onChangeText={setDescripcion}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Precio"
+            placeholderTextColor="#aaa"
+            value={precio}
+            onChangeText={setPrecio}
+            keyboardType="numeric"
+          />
+          <TouchableOpacity style={styles.imagePickerButton} onPress={seleccionarImagen}>
+            <Text style={styles.buttonText}>Seleccionar Imagen</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={handleCancelar}>
-            <Text style={styles.buttonText}>Cancelar</Text>
-          </TouchableOpacity>
+          {imagen && (
+            <Image
+              source={{ uri: imagen }}
+              style={{ width: 100, height: 100, marginBottom: 15, borderRadius: 10 }}
+            />
+          )}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={guardarVideojuego}>
+              <Text style={styles.buttonText}>Guardar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => Alert.alert("Cancelar")}>
+              <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ImageBackground>
+
+        <View style={[styles.gamesListContainer, { paddingBottom: 20 }]}>
+          <Text style={styles.gamesListHeader}>Videojuegos Agregados</Text>
+          {videojuegos.map((juego, index) => (
+            <View key={index} style={styles.gameItem}>
+              <Image
+                source={{ uri: typeof juego.image === "string" ? juego.image : "https://via.placeholder.com/150" }}
+                style={styles.gameImage}
+              />
+              <View style={styles.gameInfo}>
+                <Text style={styles.gameName}>{juego.name}</Text>
+                <Text style={styles.gameDescription}>{juego.description}</Text>
+                <Text style={styles.gamePrice}>
+                  Precio: ${typeof juego.price === "number" ? juego.price.toFixed(2) : "No disponible"}
+                </Text>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.updateButton]}
+                    onPress={() => {
+                      const updatedData = { name: "Nuevo Nombre" }; // Replace with actual data
+                      actualizarVideojuego(juego.id!, updatedData);
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Actualizar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.deleteButton]}
+                    onPress={() => eliminarVideojuego(juego.id!)}
+                  >
+                    <Text style={styles.buttonText}>Eliminar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.detailsButton]}
+                    onPress={() => Alert.alert("Detalles del Videojuego", `Nombre: ${juego.name}\nDescripción: ${juego.description}\nPrecio: ${juego.price}`)}
+                  >
+                    <Text style={styles.buttonText}>Ver Detalles</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
+      </ImageBackground>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flex: 1,
+  },
   background: {
     flex: 1,
     backgroundColor: "#000", 
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+  },
   container: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.85)", 
+    backgroundColor: "rgba(0, 0, 0, 0.85)",
     padding: 20,
-    borderRadius: 15, 
+    borderRadius: 15,
     margin: 20,
-    shadowColor: "#fff", 
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 10, 
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
   header: {
-    fontSize: 30, 
+    fontSize: 30,
     fontWeight: "bold",
-    color: "#fff", 
-    marginBottom: 20,
+    color: "#fff",
     textAlign: "center",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 3, height: 3 },
-    textShadowRadius: 8, 
+  },
+  icon: {
+    marginRight: 10,
   },
   input: {
     backgroundColor: "#333",
@@ -97,13 +316,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12, 
     marginBottom: 15,
-    borderWidth: 1.5, 
-    borderColor: "#fff", 
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 5, 
+  },
+  imagePickerButton: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: 15,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -117,12 +336,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 6, 
-    transform: [{ scale: 1 }],
   },
   cancelButton: {
     backgroundColor: "#dc3545",
@@ -131,35 +344,75 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 6, 
-    transform: [{ scale: 1 }],
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 18, 
-    textTransform: "uppercase", 
+    fontSize: 14,
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+  gamesListContainer: {
+    padding: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    borderRadius: 12,
+    marginTop: 20,
   },
-  headerContainer: {
+  gamesListHeader: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 10,
+  },
+  gameItem: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: 15,
+    backgroundColor: "#222",
+    padding: 10,
+    borderRadius: 10,
   },
-  icon: {
-    marginRight: 10, 
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
+  gameImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  gameInfo: {
+    flex: 1,
+  },
+  gameName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  gameDescription: {
+    fontSize: 14,
+    color: "#aaa",
+    marginVertical: 5,
+  },
+  gamePrice: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#28a745",
+  },
+  actionButtons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  actionButton: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  updateButton: {
+    backgroundColor: "#007bff", // Original color for "Actualizar"
+  },
+  deleteButton: {
+    backgroundColor: "#dc3545", // Original color for "Eliminar"
+  },
+  detailsButton: {
+    backgroundColor: "#6c757d", // Original color for "Ver Detalles"
   },
 });
 
