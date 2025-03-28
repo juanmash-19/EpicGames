@@ -2,7 +2,7 @@ export const fetchUserProfile = async (token: string | null) => {
   if (!token) return null;
 
   try {
-    const res = await fetch("http://172.20.10.4:4000/api/v1/users/profile", {
+    const res = await fetch("http://172.20.10.3:4000/api/v1/users/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -26,7 +26,7 @@ export const updateUserProfile = async (
   if (!token) return;
 
   try {
-    const res = await fetch("http://172.20.10.4:4000/api/v1/users/profile", {
+    const res = await fetch("http://172.20.10.3:4000/api/v1/users/profile", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
