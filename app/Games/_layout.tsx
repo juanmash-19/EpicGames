@@ -81,10 +81,31 @@ const AddGameScreen = () => {
 
   const actualizarVideojuego = async (id: string, updatedData: Partial<Videogame>) => {
     try {
+      const existingVideogame = videojuegos.find((juego) => juego.id === id);
+      if (!existingVideogame) {
+        Alert.alert("Error", "No se encontró el videojuego para actualizar.");
+        return;
+      }
+
+      // Verificar si la imagen ha cambiado y actualizarla por separado si es un archivo
+      if (updatedData.image instanceof File) {
+        try {
+          await videogameService.updateImage(id, updatedData.image);
+          console.log("Imagen actualizada correctamente.");
+        } catch (error) {
+          console.error("Error al actualizar la imagen:", error);
+          Alert.alert("Error", "No se pudo actualizar la imagen.");
+          return; // Detener si la actualización de la imagen falla
+        }
+      }
+
+      // Actualizar los demás datos del videojuego
       const videojuegoActualizado = await videogameService.update(id, {
-        ...videojuegos.find((juego) => juego.id === id),
+        ...existingVideogame,
         ...updatedData,
-      } as Videogame);
+        image: typeof updatedData.image === "string" ? updatedData.image : existingVideogame.image, // Preserve image URL if not updated
+      });
+
       setVideojuegos((prevVideojuegos) =>
         prevVideojuegos.map((juego) =>
           juego.id === id ? { ...juego, ...videojuegoActualizado } : juego
@@ -130,7 +151,7 @@ const AddGameScreen = () => {
           </Text>
           <View style={styles.actionButtons}>
             <TouchableOpacity
-              style={styles.updateButton}
+              style={[styles.actionButton, styles.updateButton]}
               onPress={() => {
                 const updatedData = { name: "Nuevo Nombre" }; // Replace with actual data
                 actualizarVideojuego(item.id!, updatedData);
@@ -139,10 +160,16 @@ const AddGameScreen = () => {
               <Text style={styles.buttonText}>Actualizar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.deleteButton}
+              style={[styles.actionButton, styles.deleteButton]}
               onPress={() => eliminarVideojuego(item.id!)}
             >
               <Text style={styles.buttonText}>Eliminar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.detailsButton]}
+              onPress={() => Alert.alert("Detalles del Videojuego", `Nombre: ${item.name}\nDescripción: ${item.description}\nPrecio: ${item.price}`)}
+            >
+              <Text style={styles.buttonText}>Ver Detalles</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -219,7 +246,7 @@ const AddGameScreen = () => {
                 </Text>
                 <View style={styles.actionButtons}>
                   <TouchableOpacity
-                    style={styles.updateButton}
+                    style={[styles.actionButton, styles.updateButton]}
                     onPress={() => {
                       const updatedData = { name: "Nuevo Nombre" }; // Replace with actual data
                       actualizarVideojuego(juego.id!, updatedData);
@@ -228,10 +255,16 @@ const AddGameScreen = () => {
                     <Text style={styles.buttonText}>Actualizar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.deleteButton}
+                    style={[styles.actionButton, styles.deleteButton]}
                     onPress={() => eliminarVideojuego(juego.id!)}
                   >
                     <Text style={styles.buttonText}>Eliminar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.detailsButton]}
+                    onPress={() => Alert.alert("Detalles del Videojuego", `Nombre: ${juego.name}\nDescripción: ${juego.description}\nPrecio: ${juego.price}`)}
+                  >
+                    <Text style={styles.buttonText}>Ver Detalles</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -315,7 +348,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 18, 
+    fontSize: 14,
   },
   gamesListContainer: {
     padding: 10,
@@ -362,18 +395,24 @@ const styles = StyleSheet.create({
   },
   actionButtons: {
     flexDirection: "row",
+    justifyContent: "center",
     marginTop: 10,
   },
-  updateButton: {
-    backgroundColor: "#007bff",
+  actionButton: {
+    flex: 1,
     padding: 10,
     borderRadius: 5,
-    marginRight: 5,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  updateButton: {
+    backgroundColor: "#007bff", // Original color for "Actualizar"
   },
   deleteButton: {
-    backgroundColor: "#dc3545",
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: "#dc3545", // Original color for "Eliminar"
+  },
+  detailsButton: {
+    backgroundColor: "#6c757d", // Original color for "Ver Detalles"
   },
 });
 

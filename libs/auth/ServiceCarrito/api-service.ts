@@ -1,4 +1,4 @@
-const API_URL = "http://172.20.10.4:4000/api/v1/cart";
+const API_URL = "http://172.20.10.3:4000/api/v1/cart";
 
 export const fetchPurchaseHistory = async (userId: number) => {
   try {

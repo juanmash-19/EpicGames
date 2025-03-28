@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { 
   View, Text, TextInput, TouchableOpacity, StyleSheet, 
-  ActivityIndicator, Alert, ScrollView 
+  ActivityIndicator, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard 
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import withAuth from "../../libs/auth/withAuth";
@@ -67,66 +67,75 @@ const ProfileScreen = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <Text style={styles.header}>Gestión de Perfil</Text>
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"} 
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+          <View style={styles.container}>
+            <Text style={styles.header}>Gestión de Perfil</Text>
 
-        {/* Sección de solo lectura */}
-        <View style={styles.readOnlySection}>
-          <Text style={styles.readOnlyHeader}>Información del Perfil</Text>
-          <Text style={styles.readOnlyLabel}>Nombre:</Text>
-          <Text style={styles.readOnlyValue}>{name}</Text>
-          <Text style={styles.readOnlyLabel}>Apellido:</Text>
-          <Text style={styles.readOnlyValue}>{lastname}</Text>
-          <Text style={styles.readOnlyLabel}>Correo Electrónico:</Text>
-          <Text style={styles.readOnlyValue}>{email}</Text>
-          <Text style={styles.readOnlyLabel}>País:</Text>
-          <Text style={styles.readOnlyValue}>{country}</Text>
-          <Text style={styles.readOnlyLabel}>Nombre de Usuario:</Text>
-          <Text style={styles.readOnlyValue}>{username}</Text>
-        </View>
+            {/* Sección de solo lectura */}
+            <View style={styles.readOnlySection}>
+              <Text style={styles.readOnlyHeader}>Información del Perfil</Text>
+              <Text style={styles.readOnlyLabel}>Nombre:</Text>
+              <Text style={styles.readOnlyValue}>{name}</Text>
+              <Text style={styles.readOnlyLabel}>Apellido:</Text>
+              <Text style={styles.readOnlyValue}>{lastname}</Text>
+              <Text style={styles.readOnlyLabel}>Correo Electrónico:</Text>
+              <Text style={styles.readOnlyValue}>{email}</Text>
+              <Text style={styles.readOnlyLabel}>País:</Text>
+              <Text style={styles.readOnlyValue}>{country}</Text>
+              <Text style={styles.readOnlyLabel}>Nombre de Usuario:</Text>
+              <Text style={styles.readOnlyValue}>{username}</Text>
+            </View>
 
-        {/* Sección editable */}
-        <View style={styles.editableSection}>
-          <Text style={styles.editableHeader}>Editar Perfil</Text>
+            {/* Sección editable */}
+            <View style={styles.editableSection}>
+              <Text style={styles.editableHeader}>Editar Perfil</Text>
 
-          <Text style={styles.label}>Nombre</Text>
-          <TextInput style={styles.input} value={name} onChangeText={setName} />
+              <Text style={styles.label}>Nombre</Text>
+              <TextInput style={styles.input} value={name} onChangeText={setName} />
 
-          <Text style={styles.label}>Apellido</Text>
-          <TextInput style={styles.input} value={lastname} onChangeText={setLastname} />
+              <Text style={styles.label}>Apellido</Text>
+              <TextInput style={styles.input} value={lastname} onChangeText={setLastname} />
 
-          <Text style={styles.label}>Correo Electrónico</Text>
-          <TextInput style={styles.input} value={email} onChangeText={setEmail} />
+              <Text style={styles.label}>Correo Electrónico</Text>
+              <View style={[styles.input, styles.nonEditable]}>
+                <Text style={styles.nonEditableText}>{email}</Text>
+              </View>
 
-          <Text style={styles.label}>País</Text>
-          <TextInput style={styles.input} value={country} onChangeText={setCountry} />
+              <Text style={styles.label}>País</Text>
+              <TextInput style={styles.input} value={country} onChangeText={setCountry} />
 
-          <Text style={styles.label}>Nombre de Usuario</Text>
-          <TextInput style={styles.input} value={username} onChangeText={setUsername} />
+              <Text style={styles.label}>Nombre de Usuario</Text>
+              <TextInput style={styles.input} value={username} onChangeText={setUsername} />
 
-          <Text style={styles.label}>Contraseña actual</Text>
-          <TextInput
-            style={styles.input}
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-            secureTextEntry
-          />
+              <Text style={styles.label}>Contraseña actual</Text>
+              <TextInput
+                style={styles.input}
+                value={currentPassword}
+                onChangeText={setCurrentPassword}
+                secureTextEntry
+              />
 
-          <Text style={styles.label}>Nueva contraseña</Text>
-          <TextInput
-            style={styles.input}
-            value={newPassword}
-            onChangeText={setNewPassword}
-            secureTextEntry
-          />
+              <Text style={styles.label}>Nueva contraseña</Text>
+              <TextInput
+                style={styles.input}
+                value={newPassword}
+                onChangeText={setNewPassword}
+                secureTextEntry
+              />
 
-          <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
-            <Text style={styles.updateText}>Actualizar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+              <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
+                <Text style={styles.updateText}>Actualizar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -203,7 +212,7 @@ const styles = StyleSheet.create({
   },
   readOnlyHeader: {
     fontSize: 20,
-    color: "#2196f3", // Cambiado a azul
+    color: "#2196f3",
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
@@ -216,7 +225,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   readOnlyValue: {
-    color: "#b0bec5", // Color gris claro para los valores
+    color: "#b0bec5",
     fontSize: 16,
     marginBottom: 8,
   },
@@ -235,11 +244,23 @@ const styles = StyleSheet.create({
   },
   editableHeader: {
     fontSize: 20,
-    color: "#2196f3", // Cambiado a azul
+    color: "#2196f3",
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
     textTransform: "uppercase",
+  },
+  nonEditable: {
+    backgroundColor: "#1c1c1e",
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#333",
+    justifyContent: "center",
+  },
+  nonEditableText: {
+    color: "#b0bec5",
+    fontSize: 16,
   },
 });
 

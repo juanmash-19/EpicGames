@@ -1,4 +1,4 @@
-const API_URL = "http://172.20.10.4:4000/api/v1/videogames";
+const API_URL = "http://172.20.10.3:4000/api/v1/videogames";
 
 export interface Videogame {
   id?: string;
@@ -15,13 +15,12 @@ export const videogameService = {
 
     const data = await response.json();
 
-    
     const videojuegosAjustados = data.map((juego: any) => ({
       ...juego,
       image: juego.image
-        ? `http://172.20.10.4:4000/${juego.image.replace(/\\/g, "/")}` 
+        ? `http://172.20.10.3:4000/${juego.image.replace(/\\/g, "/")}`
         : null,
-      price: typeof juego.price === "string" ? parseFloat(juego.price) : juego.price, 
+      price: typeof juego.price === "string" ? parseFloat(juego.price) : juego.price,
     }));
 
     return videojuegosAjustados;
@@ -33,11 +32,10 @@ export const videogameService = {
 
     const data = await response.json();
 
-    
     return {
       ...data,
       image: data.image
-        ? `http://192.168.69.110:4000/${data.image.replace(/\\/g, "/")}`
+        ? `http://172.20.10.3:4000/${data.image.replace(/\\/g, "/")}`
         : null,
       price: typeof data.price === "string" ? parseFloat(data.price) : data.price,
     };
@@ -62,13 +60,39 @@ export const videogameService = {
   },
 
   update: async (id: string, videogame: Videogame): Promise<Videogame> => {
+    let body: FormData | string;
+    let headers: HeadersInit = {};
+
+    if (videogame.image instanceof File) {
+        // Use FormData if the image is a file
+        const formData = new FormData();
+        formData.append("name", videogame.name);
+        formData.append("description", videogame.description);
+        formData.append("price", videogame.price.toString());
+        formData.append("image", videogame.image);
+        body = formData;
+    } else {
+        // Use JSON if the image is a string (URL)
+        body = JSON.stringify({
+          name: videogame.name,
+          description: videogame.description,
+          price: videogame.price,
+          image: videogame.image, // Include image URL if it's a string
+        });
+        headers["Content-Type"] = "application/json";
+    }
+
     const response = await fetch(`${API_URL}/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(videogame),
+        method: "PATCH",
+        headers,
+        body,
     });
 
-    if (!response.ok) throw new Error("Error al actualizar el videojuego");
+    if (!response.ok) {
+        const errorBody = await response.text(); // Log the response body for debugging
+        console.error("Error al actualizar el videojuego:", errorBody);
+        throw new Error("Error al actualizar el videojuego");
+    }
     return response.json();
   },
 

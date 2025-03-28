@@ -125,6 +125,7 @@ const HomeLayout = () => {
         <Drawer.Screen name="Games" options={{ drawerLabel: "Gestión de Videojuegos", title: "Gestión de Videojuegos" }} />
         <Drawer.Screen name="Users" options={{ drawerLabel: "Gestión de Usuarios", title: "Gestión de Usuarios" }} />
         <Drawer.Screen name="Profile" options={{ drawerLabel: "Gestión de Perfil", title: "Gestión de Perfil" }} />
+        <Drawer.Screen name="PurchaseHistory" options={{ drawerLabel: "Historial de compras", title: "Historial de compras" }} />
       </Drawer>
     </PaperProvider>
   );
